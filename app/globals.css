@@ -159,7 +159,7 @@
   --sidebar-border: oklch(0.3300 0.0320 297.3518);
   --sidebar-ring: oklch(0.6794 0.1872 293.0703);
   --destructive-foreground: oklch(0.9851 0 0);
-  --radius: 0.5rem;
+
   --shadow-color: hsl(0 0% 0%);
   --shadow-opacity: 0.06;
   --shadow-blur: 5px;

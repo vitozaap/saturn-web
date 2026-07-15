@@ -4,7 +4,7 @@ import {
   JetBrains_Mono,
   Plus_Jakarta_Sans,
 } from "next/font/google";
-import { ThemeProvider } from "next-themes";
+import { ThemeProvider, useTheme } from "next-themes";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 
@@ -51,7 +51,16 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          {children}
+          <div className="min-h-screen w-full relative bg-black">
+            {/* Violet Storm Background with Top Glow */}
+            <div
+              className="absolute inset-0 z-0 bg-[radial-gradient(120%_75%_at_50%_0%,#E2D3FA_0%,#FAF7FE_60%)] dark:bg-[radial-gradient(120%_75%_at_50%_0%,#241B3A_0%,#15101F_60%)]"
+
+            >
+              {children}
+            </div>
+
+          </div>
         </ThemeProvider>
       </body>
     </html>
