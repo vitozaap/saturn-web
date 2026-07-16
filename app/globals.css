@@ -39,6 +39,7 @@
   --color-popover: var(--popover);
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
+  --color-coral: var(--coral);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -71,6 +72,7 @@
   --shadow-opacity: var(--shadow-opacity);
   --color-shadow-color: var(--shadow-color);
   --color-destructive-foreground: var(--destructive-foreground);
+  --top-spacing: 80px
 }
 
 :root {
@@ -78,6 +80,7 @@
   --foreground: oklch(0.2046 0.0437 299.2856);
   --card: oklch(1.0000 0 0);
   --card-foreground: oklch(0.2046 0.0437 299.2856);
+  --coral: oklch(0.6802 0.1894 355.28);
   --popover: oklch(1.0000 0 0);
   --popover-foreground: oklch(0.2046 0.0437 299.2856);
   --primary: oklch(0.5413 0.2466 293.0090);
@@ -131,6 +134,7 @@
   --foreground: oklch(0.9554 0.0082 301.3541);
   --card: oklch(0.2356 0.0310 298.3432);
   --card-foreground: oklch(0.9554 0.0082 301.3541);
+  --coral: oklch(0.6802 0.1894 355.28);
   --popover: oklch(0.2356 0.0310 298.3432);
   --popover-foreground: oklch(0.9554 0.0082 301.3541);
   --primary: oklch(0.6794 0.1872 293.0703);
