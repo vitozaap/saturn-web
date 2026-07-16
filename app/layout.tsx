@@ -7,6 +7,7 @@ import {
 import { ThemeProvider, useTheme } from "next-themes";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { Toaster } from "@/components/ui/sonner";
 
 const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -51,6 +52,7 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
+          <Toaster />
           <div className="absolute inset-0 z-0 bg-[radial-gradient(120%_75%_at_50%_0%,#E2D3FA_0%,#FAF7FE_60%)] dark:bg-[radial-gradient(120%_75%_at_50%_0%,#241B3A_0%,#15101F_60%)]">
             {children}
           </div>

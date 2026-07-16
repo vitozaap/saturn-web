@@ -4,7 +4,6 @@ import { compressionSchema, ICompressionForm } from "@/components/dropzone/valid
 import { Header } from "@/components/header";
 import { Presets } from "@/components/preset/presets";
 import { Badge } from "@/components/ui/badge";
-import { Button } from "@/components/ui/button";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { FormProvider, useForm } from "react-hook-form";
 export default function Home() {
@@ -31,7 +30,7 @@ export default function Home() {
         </section>
         <div className="flex flex-col gap-2 w-full h-full">
           <FormProvider {...methods}>
-            <form onSubmit={methods.handleSubmit(onSubmit)} className="flex flex-col gap-5 h-full">
+            <form onSubmit={methods.handleSubmit(onSubmit)} className="flex flex-col gap-5 h-full ">
               <Dropzone className="h-5/12" />
               <Presets />
             </form>
