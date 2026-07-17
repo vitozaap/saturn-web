@@ -1,7 +1,7 @@
 "use client"
 import { cn } from "@/lib/utils";
 import { useDropzone } from "react-dropzone";
-import { Logo } from "../logo";
+import { Logo } from "../../logo";
 import { useController } from "react-hook-form";
 import { ICompressionForm } from "./validation";
 

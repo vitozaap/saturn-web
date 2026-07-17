@@ -1,8 +1,8 @@
 
 import { Controller, useFormContext } from "react-hook-form";
-import { Badge } from "../ui/badge";
-import { Field, FieldContent, FieldDescription, FieldTitle, FieldLabel } from "../ui/field";
-import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
+import { Badge } from "../../ui/badge";
+import { Field, FieldContent, FieldDescription, FieldTitle, FieldLabel } from "../../ui/field";
+import { RadioGroup, RadioGroupItem } from "../../ui/radio-group";
 import { items } from "./items";
 import { ICompressionForm } from "./validation";
 
