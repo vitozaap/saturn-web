@@ -37,10 +37,10 @@ Base visual fiel ao design: fontes, tema claro/escuro, header, toast e a landing
 
 ## Checklist
 
-- [ ] Fontes + CSS variables
-- [ ] ThemeProvider + toggle dark mode
-- [ ] Header + Toaster
+- [x] Fontes + CSS variables
+- [x] ThemeProvider + toggle dark mode
+- [x] Header + Toaster
 - [ ] Landing (hero + dropzone estática + decorações)
 - [ ] Rewrites no `next.config.ts`
 - [ ] Stubs `lib/types.ts`, `lib/api.ts`, `lib/format.ts`
-- [ ] Build + lint verdes
+- [x] Build + lint verdes
