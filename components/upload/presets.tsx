@@ -4,7 +4,7 @@ import { Badge } from "../ui/badge";
 import { Field, FieldContent, FieldDescription, FieldTitle, FieldLabel } from "../ui/field";
 import { RadioGroup, RadioGroupItem } from "../ui/radio-group";
 import { items } from "./items";
-import { ICompressionForm } from "../dropzone/validation";
+import { ICompressionForm } from "./validation";
 
 
 export function Presets() {
