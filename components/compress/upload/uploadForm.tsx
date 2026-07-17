@@ -15,9 +15,8 @@ export function UploadForm() {
         }
     })
     const onUpload = async (data: ICompressionForm) => {
-        console.log("called", data)
         await ensureSession()
-        const res = await fetch(`${process.env.NEXT_PUBLIC_BASE_URL}/compressor`, {
+        const res = await fetch(`/api/compressor`, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
@@ -30,20 +29,18 @@ export function UploadForm() {
             credentials: "include"
         })
         const { compressionId, uploadUrl, sourceKey } = await res.json()
-        console.log(compressionId, sourceKey, uploadUrl)
-        const { status } = await fetch(uploadUrl, {
+        const { ok } = await fetch(uploadUrl, {
             method: "PUT",
             headers: {
                 "Content-Type": data.file.type
             },
             body: data.file
         })
-        console.log(status)
     }
     return (
         <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(onUpload)} className="flex flex-col gap-5 h-full ">
-                <Dropzone className="h-full"  />
+                <Dropzone className="h-full" />
                 <Presets />
             </form>
         </FormProvider>)
