@@ -17,59 +17,7 @@ export function UploadForm() {
             preset: "MID",
         }
     })
-    const onUpload = async (data: ICompressionForm) => {
-        try {
-            await ensureSession()
-            const res = await fetch(`/api/compressor`, {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    contentType: data.file.type,
-                    filename: data.file.name,
-                    preset: data.preset,
-                }),
-                credentials: "include"
-            })
-            if (!res.ok) {
-                throw new Error("Falha na conexão com o servidor.")
-            }
-            const { compressionId, uploadUrl, sourceKey } = await res.json()
-            const { ok } = await fetch(uploadUrl, {
-                method: "PUT",
-                credentials: "include",
-                headers: {
-                    "Content-Type": data.file.type
-                },
-                body: data.file
-            })
-            if (!ok) {
-                throw new Error("Falha ao salvar arquivo no servidor. Tente novamente mais tarde.")
-            }
-
-            const { ok: queued, statusText } = await fetch("/api/compressor/confirm-upload", {
-                method: "POST",
-                credentials: "include",
-                headers: {
-                    "Content-Type": "application/json",
-                },
-                body: JSON.stringify({
-                    compressionId: compressionId
-                })
-            })
-            if (queued) {
-                toast.success(`${compressionId} adicionado à fila de compressão.`)
-            }
-            else {
-                toast.warning(statusText)
-            }
-        }
-        // TODO: Better error handling, doing it just for testing purposes
-        catch (err: any) {
-            toast.error(`${err.message}`)
-        }
-    }
+    const onUpload = async (data: ICompressionForm) => {}
     return (
         <FormProvider {...methods}>
             <form onSubmit={methods.handleSubmit(onUpload)} className="flex flex-col gap-5 h-full ">
