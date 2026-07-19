@@ -388,3 +388,9 @@ para `delays: { streamGiveUp: 15000 }` no `setup` e injete um relógio simulado.
   então chega como `43.7213…`. Arredonde na UI.
 - **Sessão.** `ensureSession()` só é chamado em `requestCompression`. Se a sessão morrer no
   meio do fluxo, o SSE toma 401 e a máquina só vê um `STREAM_ERROR` genérico.
+- **Poster mora fora da máquina, de propósito.** O par antes/depois dos cards de resultado
+  vem de `usePosterPair` (`../usePosterPair.ts`), não do context. Blob URL é recurso que
+  precisa de revogação explícita, e `assign` não para filhos nem roda efeito de limpeza:
+  guardar a URL no context exigiria uma ação imperativa `revokePoster` ordenada antes de
+  `resetAll` e duplicada no `RETRY`. Mesmo motivo pelo qual `downloadUrl` também está fora.
+  Não "conserte" isso adicionando um campo no context.
