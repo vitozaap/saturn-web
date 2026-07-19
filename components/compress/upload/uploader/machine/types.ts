@@ -1,13 +1,12 @@
 import { Compression, Preset } from "@/lib/types"
 
 export type Context = {
-    file: File
+    file: File | null
     preset: Preset
     compressionId: string | null
     uploadUrl: string | null
     uploadedPercent: number
     compression: Compression | null
-    downloadUrl: string | null
     error: string | null
 }
 
@@ -22,3 +21,7 @@ export type Events =
     | { type: "UPLOAD_ERROR"; message: string }
     | { type: "STATUS"; compression: Compression }
     | { type: "STREAM_ERROR" }
+
+export type Emitted =
+    | { type: "notify"; message: string }
+    | { type: "download"; url: string }
