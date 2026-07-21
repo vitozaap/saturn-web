@@ -174,18 +174,34 @@ function once(video: HTMLVideoElement, event: string, signal: AbortSignal) {
     })
 }
 
+const PRESENT_GRACE_MS = 300
+
 /**
  * "seeked" can fire before a frame is actually presentable (Safari), which
- * captures black. requestVideoFrameCallback only fires with a decoded frame.
+ * captures black. requestVideoFrameCallback only fires with a decoded frame —
+ * but the capture `<video>` is 1x1 and opacity:0, and some browsers never
+ * composite (so never "present") a frame for an effectively-invisible
+ * element, which would hang here forever. Race it against a short grace
+ * period instead: by the time `seeked` already fired, the frame is decoded
+ * and safe to draw even if the compositor never reports it as presented.
  */
 function nextPresentedFrame(video: HTMLVideoElement) {
     const withCallback = video as VideoWithFrameCallback
 
-    if (typeof withCallback.requestVideoFrameCallback === "function") {
-        return new Promise<void>((resolve) => withCallback.requestVideoFrameCallback!(() => resolve()))
+    if (typeof withCallback.requestVideoFrameCallback !== "function") {
+        return new Promise<void>((resolve) => requestAnimationFrame(() => resolve()))
     }
 
-    return new Promise<void>((resolve) => requestAnimationFrame(() => resolve()))
+    return new Promise<void>((resolve) => {
+        let settled = false
+        const finish = () => {
+            if (settled) return
+            settled = true
+            resolve()
+        }
+        withCallback.requestVideoFrameCallback!(finish)
+        setTimeout(finish, PRESENT_GRACE_MS)
+    })
 }
 
 function drawToBlob(

@@ -103,5 +103,14 @@ export function usePosterPair(file: File | null, preset: Preset) {
         }
     }, [frame, preset])
 
-    return { before, after, ready: before !== null }
+    return {
+        before,
+        after,
+        ready: before !== null,
+        // Already decoded while capturing the poster frame — exposed so callers
+        // don't need a second video probe just for the meta line (resolution/duration).
+        width: frame?.width ?? null,
+        height: frame?.height ?? null,
+        duration: frame?.duration ?? null,
+    }
 }
