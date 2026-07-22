@@ -5,8 +5,7 @@ import Link from "next/link";
 import { Uploader } from "@/components/compress/upload/uploader/uploader";
 export default function Home() {
   return (
-    <div className="flex flex-col flex-1 h-full w-full items-center">
-      <Header />
+    <div className="flex flex-1 flex-col min-h-0 w-full items-center">
       <Uploader />
     </div>
   );
