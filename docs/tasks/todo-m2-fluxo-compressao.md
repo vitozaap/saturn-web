@@ -1,6 +1,6 @@
 # Task: M2 — Fluxo de compressão ponta a ponta (API como está)
 
-**Status:** ⬜ não iniciada
+**Status:** ✅ concluída
 **Criada:** 2026-07-15
 **Depende de:** M1.
 **Escopo:** só `web/` — usa a API atual, sem mudanças nela. **É o produto.**
@@ -62,4 +62,4 @@ Soltar um vídeo na landing → ver o squish acontecendo → baixar o resultado.
 - [x] Tela Comprimindo — fase Enviando (% real + cancelar) e fase Comprimindo (barra indeterminada + frases)
 - [x] Card de erro (FAILED) com tentar de novo
 - [x] Tela Resultado (antes/depois, −%, download, aviso 24h, comprimir outro)
-- [ ] Validação de arquivo (500 MB, MP4/WebM/MOV)
+- [x] Validação de arquivo (500 MB, MP4/WebM/MOV)
