@@ -48,7 +48,7 @@
   --radius-3xl: calc(var(--radius) * 2.2);
   --radius-4xl: calc(var(--radius) * 2.6);
   --font-serif: "Lora", Georgia, serif;
-  --radius: 0.5rem;
+  --radius: 0.8rem;
   --tracking-tighter: calc(var(--tracking-normal) - 0.05em);
   --tracking-tight: calc(var(--tracking-normal) - 0.025em);
   --tracking-wide: calc(var(--tracking-normal) + 0.025em);
@@ -100,7 +100,7 @@
   --chart-3: oklch(0.491 0.2438 292.9301);
   --chart-4: oklch(0.7499 0.1298 319.8433);
   --chart-5: oklch(0.5498 0.0312 296.8084);
-  --radius: 0.75rem;
+  --radius: 0.8rem;
   --sidebar: oklch(0.9851 0.0069 304.2444);
   --sidebar-foreground: oklch(0.2046 0.0437 299.2856);
   --sidebar-primary: oklch(0.5413 0.2466 293.009);
@@ -203,4 +203,17 @@
   html {
     @apply font-sans;
   }
+}
+
+@keyframes indeterminate-slide {
+  0% {
+    left: -38%;
+  }
+  100% {
+    left: 104%;
+  }
+}
+
+.animate-indeterminate {
+  animation: indeterminate-slide 1.25s ease-in-out infinite;
 }
