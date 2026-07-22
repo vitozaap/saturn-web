@@ -1,5 +1,5 @@
 import { Preset } from "@/lib/types"
-
+import { fileTypeFromStream } from "file-type"
 export type CapturedFrame = {
     bitmap: ImageBitmap
     /** Already normalised to TARGET_WIDTH — not the source video's resolution. */
@@ -24,6 +24,31 @@ const TIMEOUT_MS = 5_000
 const SEEK_RATIO = 0.1
 const MAX_SEEK_S = 2
 const OUTPUT_QUALITY = 0.92
+
+
+const ALLOWED = new Set([
+    'mp4|video/mp4',
+    'mov|video/quicktime',
+    'mkv|video/matroska',
+    'webm|video/webm',
+    'avi|video/vnd.avi',
+    'flv|video/x-flv',
+    'asf|video/x-ms-asf',
+    'asf|application/vnd.ms-asf',
+    '3gp|video/3gpp',
+    '3g2|video/3gpp2',
+    'mpg|video/mpeg',
+    'mpg|video/MP1S',
+    'mpg|video/MP2P',
+    'mts|video/mp2t',
+    'mxf|application/mxf',
+    'ogv|video/ogg',
+    'ogm|video/ogg',
+    'rm|application/vnd.rn-realmedia',
+    'm4v|video/x-m4v',
+    'f4v|video/mp4',
+    'f4p|video/mp4'
+])
 
 /**
  * How much visual damage to fake per preset, so the user can see the quality
@@ -239,4 +264,10 @@ function withTimeout<T>(promise: Promise<T>, ms: number) {
         const timer = setTimeout(() => reject(new Error("video decode timed out")), ms)
         promise.then(resolve, reject).finally(() => clearTimeout(timer))
     })
+}
+
+export async function validateMedia(video: File) {
+    const captured = await fileTypeFromStream(video.stream())
+    if (!captured) return
+    return ALLOWED.has(`${captured?.ext}|${captured?.mime}`) 
 }

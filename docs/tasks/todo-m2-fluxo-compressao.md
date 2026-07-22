@@ -57,12 +57,9 @@ Soltar um vídeo na landing → ver o squish acontecendo → baixar o resultado.
 
 ## Checklist
 
-- [ ] `lib/auth-client.ts` + sign-in anônimo
-- [ ] `lib/api.ts` implementado (4 endpoints + tipos)
-- [ ] Hook `useCompression` (create → XHR PUT → confirm → SSE)
-- [ ] Tela Comprimindo — fase Enviando (% real + cancelar) e fase Comprimindo (barra indeterminada + frases)
-- [ ] Card de erro (FAILED) com tentar de novo
-- [ ] Tela Resultado (antes/depois, −%, download, aviso 24h, comprimir outro)
+- [x] `lib/auth-client.ts` + sign-in anônimo
+- [x] `lib/api.ts` implementado (4 endpoints + tipos)
+- [x] Tela Comprimindo — fase Enviando (% real + cancelar) e fase Comprimindo (barra indeterminada + frases)
+- [x] Card de erro (FAILED) com tentar de novo
+- [x] Tela Resultado (antes/depois, −%, download, aviso 24h, comprimir outro)
 - [ ] Validação de arquivo (500 MB, MP4/WebM/MOV)
-- [ ] Vídeo de exemplo
-- [ ] Demo ponta a ponta gravável

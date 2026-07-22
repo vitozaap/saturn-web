@@ -1,5 +1,5 @@
 "use client"
-import { FormProvider, useForm } from "react-hook-form"
+import { FormProvider, SubmitErrorHandler, useForm } from "react-hook-form"
 import { compressionSchema, ICompressionForm } from "./validation"
 import { zodResolver } from "@hookform/resolvers/zod"
 import Dropzone from "./dropzone"
@@ -8,6 +8,7 @@ import { UploaderContext } from "./uploader/uploader-context"
 import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
+import { toast } from "sonner"
 
 
 export function UploadForm() {
@@ -18,6 +19,11 @@ export function UploadForm() {
             preset: "MID",
         }
     })
+    const onError: SubmitErrorHandler<ICompressionForm> = async (errors) => {
+        toast.error("Não foi possível enviar o arquivo", {
+            description: errors.file?.message
+        })
+    }
     const onUpload = (data: ICompressionForm) => {
         actorRef.send({ type: "SUBMIT", file: data.file, preset: data.preset })
     }
@@ -31,7 +37,7 @@ export function UploadForm() {
                     </h1>
                     <p className="text-muted-foreground max-w-xl text-center text-lg">Comprima qualquer vídeo e baixe na hora! Sem perder a qualidade que realmente importa.</p>
                 </section>
-                <form onSubmit={methods.handleSubmit(onUpload)} className="flex flex-col gap-5 h-7/12">
+                <form onSubmit={methods.handleSubmit(onUpload, onError)} className="flex flex-col gap-5 h-7/12">
                     <Dropzone className="h-full" />
                     <Presets />
                 </form>
