@@ -45,7 +45,7 @@ npm run lint    # eslint
 
 ## Language
 
-Code, comments, commits, and CI are written in English. Only docs under `docs/` are in Portuguese. UI copy (user-facing strings) is in Portuguese.
+Code, comments, commits, and CI are written in English. Docs under `docs/` and module-level `README.md` files are in Portuguese. UI copy (user-facing strings) is in Portuguese.
 
 ## GitHub
 

@@ -30,6 +30,25 @@ export interface RequestCompressionInput {
     preset?: Preset
 }
 
+export interface ConfirmUploadInput {
+    compressionId: string
+}
+
+export interface UploadS3Input {
+    uploadUrl: string,
+    file: File,
+    onProgress: (percent: number) => void,
+    signal?: AbortSignal,
+}
+
+export interface StreamCompressionInput {
+    compressionId: string
+}
+
+export interface RequestDownloadInput {
+    compressionId: string
+}
+
 export interface RequestCompressionResponse {
     compressionId: string
     uploadUrl: string
