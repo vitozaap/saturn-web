@@ -5,9 +5,6 @@ import { getSession } from "@/lib/sessionServer";
 
 export async function Header() {
     const session = await getSession()
-    await new Promise((resolve, _) => {
-        setTimeout(() => resolve(""), 5000)
-    })
     return (
         <header className="flex w-full py-5 px-9 items-center-safe justify-between">
             <Link href="/" className="flex gap-2 items-center cursor-pointer">
