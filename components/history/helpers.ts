@@ -6,7 +6,7 @@ export function totalCompressed(videos: Compression[]) {
     let totalOutputSize = 0;
     for (let i = 0; i <= videos.length - 1; i++) {
         totalSourceSize += Number(videos[i].sourceSize ?? 0)
-        totalOutputSize += Number(videos[i].outputSize ?? 0)
+        totalOutputSize += Number(videos[i].outputSize ?? videos[i].sourceSize)
     }
     const total = totalSourceSize - totalOutputSize
     return formatBytes(total)
