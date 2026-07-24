@@ -7,7 +7,7 @@ import { average, totalCompressed } from "./helpers"
 const cardVariants = cva("flex flex-col items-center py-1.5 px-4 rounded-md border", {
     variants: {
         variant: {
-            default: "bg-muted [&>span]:text-muted-foreground",
+            default: "bg-card dark:bg-muted [&>span]:text-muted-foreground",
             active: "border-primary/50 bg-primary/10 text-primary rotate-3 [&>span]:font-medium [&>h2]:shimmer"
         }
     },
