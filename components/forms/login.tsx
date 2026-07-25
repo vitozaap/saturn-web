@@ -1,7 +1,67 @@
+"use client"
+import { Controller, useForm } from "react-hook-form"
+import { Field, FieldError, FieldGroup, FieldLabel, FieldSet } from "../ui/field"
+import { zodResolver } from "@hookform/resolvers/zod"
+import { LoginFormType, loginSchema } from "./loginForm"
+import { InputGroup, InputGroupAddon, InputGroupInput } from "../ui/input-group"
+import { ArrowRight, Eye, Key, KeyRound, Lock, Mail } from "lucide-react"
+import { Button, buttonVariants } from "../ui/button"
+import { PasswordInput } from "../ui/password-input"
+import Link from "next/link"
+
 export function LoginForm() {
+    const form = useForm<LoginFormType>({
+        resolver: zodResolver(loginSchema),
+        defaultValues: {
+            email: "",
+            password: ""
+        }
+    })
+    const onSubmit = (data: LoginFormType) => {
+        console.log(data)
+    }
     return (
-        <>
-            Login Form
-        </>
+        <form onSubmit={form.handleSubmit(onSubmit)}>
+            <FieldGroup>
+                <FieldSet className="gap-3">
+                    <Controller
+                        name="email"
+                        control={form.control}
+                        render={({ field, fieldState }) =>
+                            <Field>
+                                <FieldLabel >
+                                    Email
+                                </FieldLabel>
+                                <InputGroup>
+                                    <InputGroupInput placeholder="Digite seu email" {...field} aria-invalid={fieldState.invalid} />
+                                    <InputGroupAddon align={"inline-start"}>
+                                        <Mail className="text-muted-foreground" />
+                                    </InputGroupAddon>
+                                </InputGroup>
+                                {fieldState.invalid && (
+                                    <FieldError>{fieldState.error?.message}</FieldError>
+                                )}
+                            </Field>}
+                    />
+                    <Controller
+                        name="password"
+                        control={form.control}
+                        render={({ field, fieldState }) =>
+                            <Field>
+                                <FieldLabel>
+                                    Senha
+                                </FieldLabel>
+                                <PasswordInput {...field} aria-invalid={fieldState.invalid} />
+                                {fieldState.invalid && (
+                                    <FieldError>{fieldState.error?.message}</FieldError>
+                                )}
+                            </Field>}
+                    />
+                    <Link href={"/"} className={"flex text-sm font-medium w-full justify-end decoration-0 text-primary"}>Esqueceu sua senha?</Link>
+                    <Button type="submit">Entrar agora</Button>
+                </FieldSet>
+            </FieldGroup>
+        </form >
+
     )
 }
