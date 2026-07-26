@@ -4,7 +4,7 @@ import { useState } from "react"
 import Link from "next/link"
 import { Check, Clock, Download, X } from "lucide-react"
 
-import { Button } from "@/components/ui/button"
+import { Button, buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { formatBytes, videoFormatLabel } from "@/lib/format"
 import { UploaderContext } from "./uploader-context"
@@ -93,7 +93,7 @@ export function ResultCard({ before, after }: ResultCardProps) {
 
             <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
                 <Clock className="size-3.5" />
-                Automaticamente deletado em 24h. 
+                Automaticamente deletado em 24h.
             </div>
 
             {!inviteDismissed && (
@@ -111,7 +111,7 @@ export function ResultCard({ before, after }: ResultCardProps) {
                             Crie uma conta grátis para ver seu histórico e baixar de novo quando quiser.
                         </div>
                     </div>
-                    <Button nativeButton={false} render={<Link href="/login">Criar conta grátis</Link>} />
+                    <Link href="/register" className={buttonVariants()}>Criar conta grátis</Link>
                 </div>
             )}
         </div>
