@@ -2,10 +2,10 @@
 import { Controller, useForm } from "react-hook-form"
 import { Field, FieldError, FieldGroup, FieldLabel, FieldSet } from "../ui/field"
 import { zodResolver } from "@hookform/resolvers/zod"
-import { LoginFormType, loginSchema } from "./loginForm"
+import { LoginFormType, loginSchema } from "./schemas"
 import { InputGroup, InputGroupAddon, InputGroupInput } from "../ui/input-group"
-import { ArrowRight, Eye, Key, KeyRound, Lock, Mail } from "lucide-react"
-import { Button, buttonVariants } from "../ui/button"
+import { Mail } from "lucide-react"
+import { Button } from "../ui/button"
 import { PasswordInput } from "../ui/password-input"
 import Link from "next/link"
 
@@ -33,7 +33,7 @@ export function LoginForm() {
                                     Email
                                 </FieldLabel>
                                 <InputGroup>
-                                    <InputGroupInput placeholder="Digite seu email" {...field} aria-invalid={fieldState.invalid} />
+                                    <InputGroupInput placeholder="Digite seu email" type="email" {...field} aria-invalid={fieldState.invalid} />
                                     <InputGroupAddon align={"inline-start"}>
                                         <Mail className="text-muted-foreground" />
                                     </InputGroupAddon>
@@ -61,7 +61,6 @@ export function LoginForm() {
                     <Button type="submit">Entrar agora</Button>
                 </FieldSet>
             </FieldGroup>
-        </form >
-
+        </form>
     )
 }
