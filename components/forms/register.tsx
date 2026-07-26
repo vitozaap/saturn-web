@@ -64,7 +64,7 @@ export function RegisterForm() {
                         render={({ field, fieldState }) =>
                             <Field>
                                 <FieldLabel>
-                                    Senha
+                                    Confirmar senha
                                 </FieldLabel>
                                 <PasswordInput {...field} aria-invalid={fieldState.invalid} />
                                 {fieldState.invalid && (
