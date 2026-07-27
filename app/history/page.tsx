@@ -2,12 +2,18 @@ import { HistoryCards } from "@/components/history/historyCards";
 import { HistoryTable } from "@/components/history/historyTable";
 import { Label } from "@/components/ui/label";
 import { listCompressions } from "@/lib/api.server";
+import { getSession } from "@/lib/sessionServer";
 import { Clock } from "lucide-react";
+import { redirect } from "next/navigation";
 
 
 
 
 export default async function History() {
+    const session = await getSession()
+    if (!session || session.data?.user.isAnonymous) {
+        redirect("/login")
+    }
     const compressions = await listCompressions()
     return (
         <main className="flex flex-col flex-1 min-h-0 items-center w-full overflow-hidden">

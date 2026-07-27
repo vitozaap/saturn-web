@@ -1,13 +1,19 @@
 import { AuthTabs } from "@/components/auth/auth-tabs";
 import { buttonVariants } from "@/components/ui/button";
+import { getSession } from "@/lib/sessionServer";
 import { ArrowLeft, Home } from "lucide-react";
 import Link from "next/link";
+import { redirect } from "next/navigation";
 
-export default function AuthLayout({
+export default async function AuthLayout({
     children,
 }: Readonly<{
     children: React.ReactNode;
 }>) {
+    const session = await getSession()
+    if (session && !session.data?.user.isAnonymous) {
+        redirect("/history")
+    }
     return (
         <main className="flex flex-col mt-12 items-center h-full">
             <div className="flex w-full px-9 justify-end"><Link className={buttonVariants({

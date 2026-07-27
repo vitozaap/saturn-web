@@ -8,6 +8,8 @@ import { Mail } from "lucide-react"
 import { Button } from "../ui/button"
 import { PasswordInput } from "../ui/password-input"
 import Link from "next/link"
+import { authClient } from "@/lib/auth"
+import { toast } from "sonner"
 
 export function LoginForm() {
     const form = useForm<LoginFormType>({
@@ -17,8 +19,21 @@ export function LoginForm() {
             password: ""
         }
     })
-    const onSubmit = (data: LoginFormType) => {
-        console.log(data)
+    const onSubmit = async (data: LoginFormType) => {
+        const payload = await authClient.signIn.email({
+            email: data.email,
+            password: data.password,
+            rememberMe: true,
+            fetchOptions: {
+                credentials: "include"
+            }
+        })
+        if (payload.error) {
+            toast.error("Ocorreu um erro ao tentar logar", {
+                description: payload.error.message
+            })
+        }
+        console.log(payload)
     }
     return (
         <form onSubmit={form.handleSubmit(onSubmit)}>

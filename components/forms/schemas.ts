@@ -11,6 +11,9 @@ export type LoginFormType = z.infer<typeof loginSchema>
 
 
 export const registerSchema = z.object({
+    name: z.string().min(3, {
+        error: "Nome deve conter no mínimo 3 letras"
+    }).nonoptional(),
     email: z.email({ error: "Endereço de email inválido" }).nonoptional(),
     password: z.string().nonoptional(),
     confirmPassword: z.string().nonoptional()
