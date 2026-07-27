@@ -10,8 +10,10 @@ import { PasswordInput } from "../ui/password-input"
 import Link from "next/link"
 import { authClient } from "@/lib/auth"
 import { toast } from "sonner"
+import { useRouter } from "next/navigation"
 
 export function LoginForm() {
+    const router = useRouter()
     const form = useForm<LoginFormType>({
         resolver: zodResolver(loginSchema),
         defaultValues: {
@@ -20,20 +22,16 @@ export function LoginForm() {
         }
     })
     const onSubmit = async (data: LoginFormType) => {
-        const payload = await authClient.signIn.email({
+        await authClient.signIn.email({
             email: data.email,
             password: data.password,
             rememberMe: true,
             fetchOptions: {
                 credentials: "include"
             }
-        })
-        if (payload.error) {
-            toast.error("Ocorreu um erro ao tentar logar", {
-                description: payload.error.message
-            })
-        }
-        console.log(payload)
+        }).then((payload) => !payload.error ? router.push("/history") : toast.error("Ocorreu um erro ao criar sua conta", {
+            description: payload.error.message
+        }))
     }
     return (
         <form onSubmit={form.handleSubmit(onSubmit)}>
