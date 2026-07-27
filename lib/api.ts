@@ -1,6 +1,5 @@
 import { ensureSession } from "./session"
 import type {
-    Compression,
     ConfirmUploadInput,
     RequestCompressionInput,
     RequestCompressionResponse,
@@ -11,7 +10,7 @@ import type {
 
 const JSON_HEADERS = { "Content-Type": "application/json" }
 
-async function failure(res: Response, fallback: string): Promise<Error> {
+export async function failure(res: Response, fallback: string): Promise<Error> {
     try {
         const body = await res.json()
         const message = Array.isArray(body?.message) ? body.message.join(", ") : body?.message
@@ -92,16 +91,6 @@ export async function confirmUpload(input: ConfirmUploadInput): Promise<void> {
     if (!res.ok) throw await failure(res, "Falha ao enfileirar a compressão.")
 }
 
-// GET /compressor — lists every compression owned by the authenticated user.
-export async function listCompressions(): Promise<Compression[]> {
-    const res = await fetch("/api/compressor", {
-        method: "GET",
-        credentials: "include",
-    })
-    if (!res.ok) throw await failure(res, "Falha ao carregar o histórico.")
-    return res.json()
-}
-
 // SSE GET /compressor/:id/stream — emits the compression on each status
 export function streamCompression(input: StreamCompressionInput): EventSource {
     return new EventSource(`/api/compressor/${input.compressionId}/stream`, {
@@ -120,3 +109,6 @@ export async function requestDownload(input: RequestDownloadInput): Promise<stri
     if (!res.ok) throw await failure(res, "Falha ao gerar o link de download.")
     return res.text()
 }
+
+// DELETE /compressor/:id lives in app/history/actions.ts instead: it runs as a
+// Server Action so it can revalidatePath("/history") and refresh the list.

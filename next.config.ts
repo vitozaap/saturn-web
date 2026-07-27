@@ -5,7 +5,9 @@ const nextConfig: NextConfig = {
   reactCompiler: true,
   output: "standalone",
   experimental: {
-    typedEnv: true
+    typedEnv: true,
+    // Lets React's <ViewTransition> animate App Router navigations.
+    viewTransition: true
   },
   // Proxy the API through the web origin: the browser only ever talks to this
   // host, so the better-auth session cookie stays first-party and fetch/
