@@ -7,6 +7,7 @@ import { Check, Clock, Download, X } from "lucide-react"
 import { Button, buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { formatBytes, videoFormatLabel } from "@/lib/format"
+import { useIsRegistered } from "@/lib/useIsRegistered"
 import { UploaderContext } from "./uploader-context"
 
 type ResultCardProps = {
@@ -43,6 +44,7 @@ function PosterBox({ url, label, size, tone }: { url: string | null; label: stri
 
 export function ResultCard({ before, after }: ResultCardProps) {
     const [inviteDismissed, setInviteDismissed] = useState(false)
+    const { isRegistered, pending: sessionPending } = useIsRegistered()
     const actorRef = UploaderContext.useActorRef()
     const fileName = UploaderContext.useSelector((snapshot) => snapshot.context.file?.name ?? "")
     const contentType = UploaderContext.useSelector((snapshot) => snapshot.context.file?.type ?? "")
@@ -96,7 +98,9 @@ export function ResultCard({ before, after }: ResultCardProps) {
                 Automaticamente deletado em 24h.
             </div>
 
-            {!inviteDismissed && (
+            {/* Only anonymous visitors get the signup invite — a logged-in user
+                already has the history it advertises. */}
+            {!inviteDismissed && !sessionPending && !isRegistered && (
                 <div className="relative flex w-full items-center gap-5 rounded-2xl border border-primary bg-primary/5 p-5">
                     <button
                         type="button"
