@@ -4,10 +4,13 @@ import {
   JetBrains_Mono,
   Plus_Jakarta_Sans,
 } from "next/font/google";
-import { ThemeProvider, useTheme } from "next-themes";
+import { ThemeProvider } from "next-themes";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
+import { Header } from "@/components/header";
+import { Suspense } from "react";
+import { HeaderSkeleton } from "@/components/headerSkeleton";
 
 const bricolage = Bricolage_Grotesque({
   subsets: ["latin"],
@@ -53,7 +56,10 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Toaster />
-          <div className="absolute inset-0 z-0 bg-[radial-gradient(120%_75%_at_50%_0%,#E2D3FA_0%,#FAF7FE_60%)] dark:bg-[radial-gradient(120%_75%_at_50%_0%,#241B3A_0%,#15101F_60%)]">
+          <div className="absolute inset-0 z-0 flex flex-col bg-[radial-gradient(120%_75%_at_50%_0%,#E2D3FA_0%,#FAF7FE_60%)] dark:bg-[radial-gradient(120%_75%_at_50%_0%,#241B3A_0%,#15101F_60%)]">
+            <Suspense fallback={<HeaderSkeleton />}>
+              <Header />
+            </Suspense>
             {children}
           </div>
         </ThemeProvider>

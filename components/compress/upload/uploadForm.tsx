@@ -21,7 +21,7 @@ export function UploadForm() {
     })
     const onError: SubmitErrorHandler<ICompressionForm> = async (errors) => {
         toast.error("Não foi possível enviar o arquivo", {
-            description: errors.file?.message
+            description: errors.file?.message ?? errors.preset?.message ?? "Verifique o arquivo e tente de novo."
         })
     }
     const onUpload = (data: ICompressionForm) => {

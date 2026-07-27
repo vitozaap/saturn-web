@@ -8,7 +8,7 @@ export default function ThemeSwitch() {
     const { resolvedTheme, setTheme } = useTheme()
     const changeTheme = () => resolvedTheme == "dark" ? setTheme("light") : setTheme("dark")
     return (
-        <Button variant={"ghost"} size={"icon"} onClick={changeTheme}>
+        <Button variant={"ghost"} size={"icon-sm"} onClick={changeTheme}>
             {resolvedTheme == "dark" ? <Sun /> : <Moon />}
         </Button>
     )
