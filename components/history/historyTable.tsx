@@ -8,7 +8,7 @@ import { CopyIcon, DownloadIcon, FolderOpen, MoreHorizontalIcon, PlayIcon, Plus,
 import { useState, useTransition } from "react"
 import { toast } from "sonner"
 import { Badge } from "../ui/badge"
-import { Button } from "../ui/button"
+import { Button, buttonVariants } from "../ui/button"
 import {
     DropdownMenu,
     DropdownMenuContent,
@@ -26,6 +26,7 @@ import {
 } from "../ui/table"
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "../ui/empty"
 import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog"
+import Link from "next/link"
 
 const STATUS: Record<CompressionStatus, { label: string; variant: "default" | "secondary" | "destructive" | "outline" }> = {
     PENDING_UPLOAD: { label: "Enviando", variant: "secondary" },
@@ -100,14 +101,12 @@ export function HistoryTable({ compressions }: { compressions: Compression[] }) 
                     </EmptyMedia>
                     <EmptyTitle>Sem arquivos por aqui</EmptyTitle>
                     <EmptyDescription >
-                        Você ainda não realizou nenhuma compressão. Suas compressões, até mesmo as expiradas ou falhadas irão aparecer aqui.
+                        Você ainda não realizou nenhuma compressão. Suas compressões (mesmo as expiradas ou falhadas) irão aparecer aqui.
                     </EmptyDescription>
                 </EmptyHeader>
                 <EmptyContent className="flex-row justify-center gap-2">
-                    <Button className={"flex-1"}>
-                        <Plus /> Nova compressão
-                    </Button>
-                    <Button variant={"secondary"}>Como funciona</Button>
+                    <Link href={"/"} className={buttonVariants({ variant: "default" })}><Plus /> Nova compressão</Link>
+                    <Link href={"/help"} className={buttonVariants({ variant: "secondary" })}>Como funciona</Link>
                 </EmptyContent>
 
             </Empty> :

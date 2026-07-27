@@ -19,9 +19,9 @@ export function HeaderActions({ user }: { user: User & { isAnonymous: boolean | 
     if (user && !user.isAnonymous) {
         return (<div className='flex gap-1 items-center'>
             <ThemeSwitch />
-            <Button size={"sm"} variant={"ghost"}>Como funciona</Button>
-            <Button size={"sm"} variant={"ghost"}>Formatos</Button>
-            {path !== "/" ? <Button size={"sm"}><Plus />Novo</Button> : ""}
+            <Link className={buttonVariants({ size: "sm", variant: "ghost" })} href={"/help"}>Como funciona</Link>
+            <Link className={buttonVariants({ size: "sm", variant: "ghost" })} href={"/formats"}>Formatos</Link>
+            {path !== "/" ? <Link className={buttonVariants({ size: "sm", variant: "default" })} href={"/"}><Plus />Novo</Link> : ""}
 
             <DropdownMenu>
                 <DropdownMenuTrigger nativeButton={false} className={"ml-4"} render={
@@ -32,7 +32,7 @@ export function HeaderActions({ user }: { user: User & { isAnonymous: boolean | 
                 } />
                 <DropdownMenuContent className={"min-w-38"}>
                     <DropdownMenuGroup>
-                        <DropdownMenuItem> <Book /> Histórico</DropdownMenuItem>
+                        <Link href={"/history"}> <DropdownMenuItem> <Book /> Histórico</DropdownMenuItem></Link>
                     </DropdownMenuGroup>
                     <DropdownMenuSeparator />
                     <DropdownMenuItem variant='destructive' onClick={async () => {
