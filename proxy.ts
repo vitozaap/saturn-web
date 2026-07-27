@@ -6,12 +6,11 @@ const PROTECTED = ['/history']
 
 export async function proxy(request: NextRequest) {
     const { pathname } = request.nextUrl
-    const session = getSessionCookie(request)
+    const session = getSessionCookie(request, { cookiePrefix: "squish" })
     const protectedRoute = PROTECTED.some((route) => pathname.startsWith(route))
     if (protectedRoute && !session) {
-        NextResponse.redirect(new URL("/register", request.url))
+        return NextResponse.redirect(new URL("/login", request.url))
     }
-
     return NextResponse.next()
 }
 

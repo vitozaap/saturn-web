@@ -4,9 +4,11 @@ import dynamic from 'next/dynamic'
 import { Button, buttonVariants } from './ui/button'
 import { User } from 'better-auth'
 import { Avatar, AvatarFallback, AvatarImage } from './ui/avatar'
-import { Plus } from 'lucide-react'
+import { Book, LogOut, Plus } from 'lucide-react'
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
+import { DropdownMenu, DropdownMenuContent, DropdownMenuGroup, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from './ui/dropdown-menu'
+import { authClient } from '@/lib/auth'
 
 // Prevent theme hydration errors by only loading themeSwitch when the client is mounted
 const ThemeSwitch = dynamic(() => import('./themeSwitch'), { ssr: false })
@@ -20,12 +22,25 @@ export function HeaderActions({ user }: { user: User & { isAnonymous: boolean | 
             <Button size={"sm"} variant={"ghost"}>Como funciona</Button>
             <Button size={"sm"} variant={"ghost"}>Formatos</Button>
             {path !== "/" ? <Button size={"sm"}><Plus />Novo</Button> : ""}
-            <Link href={"/history"} className='ml-4'>
-                <Avatar>
-                    <AvatarImage src={user.image!} alt='user-image' />
-                    <AvatarFallback><span className={"font-medium p-2"}>{user.name.substring(0, 2).toUpperCase()}</span></AvatarFallback>
-                </Avatar>
-            </Link>
+
+            <DropdownMenu>
+                <DropdownMenuTrigger nativeButton={false} className={"ml-4"} render={
+                    <Avatar className={"cursor-pointer"}>
+                        <AvatarImage src={user.image!} alt='user-image' />
+                        <AvatarFallback><span className={"font-medium p-2"}>{user.name.substring(0, 1).toUpperCase()}</span></AvatarFallback>
+                    </Avatar>
+                } />
+                <DropdownMenuContent className={"min-w-38"}>
+                    <DropdownMenuGroup>
+                        <DropdownMenuItem> <Book /> Histórico</DropdownMenuItem>
+                    </DropdownMenuGroup>
+                    <DropdownMenuSeparator />
+                    <DropdownMenuItem variant='destructive' onClick={async () => {
+                        await authClient.signOut().then(() => window.location.reload())
+                    }}> <LogOut /> Sair da conta</DropdownMenuItem>
+                </DropdownMenuContent>
+            </DropdownMenu>
+
         </div>)
     }
     return (

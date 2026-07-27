@@ -11,7 +11,7 @@ import { redirect } from "next/navigation";
 
 export default async function History() {
     const session = await getSession()
-    if (!session || session.data?.user.isAnonymous) {
+    if (session.data === null || session.data?.user.isAnonymous) {
         redirect("/login")
     }
     const compressions = await listCompressions()

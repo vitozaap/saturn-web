@@ -11,7 +11,8 @@ export default async function AuthLayout({
     children: React.ReactNode;
 }>) {
     const session = await getSession()
-    if (session && !session.data?.user.isAnonymous) {
+    console.log(session)
+    if (session.data !== null && !session.data?.user.isAnonymous) {
         redirect("/history")
     }
     return (
