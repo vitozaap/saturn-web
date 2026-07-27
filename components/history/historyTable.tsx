@@ -2,7 +2,7 @@
 
 import { deleteCompressionAction } from "@/app/history/actions"
 import { requestDownload } from "@/lib/api"
-import { formatBytes, videoFormatLabel } from "@/lib/format"
+import { formatBytes, truncateFilename, videoFormatLabel } from "@/lib/format"
 import { Compression, CompressionStatus } from "@/lib/types"
 import { CopyIcon, DownloadIcon, FolderOpen, MoreHorizontalIcon, PlayIcon, Plus, Trash } from "lucide-react"
 import { useState, useTransition } from "react"
@@ -25,6 +25,7 @@ import {
     TableRow,
 } from "../ui/table"
 import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "../ui/empty"
+import { AlertDialog, AlertDialogAction, AlertDialogCancel, AlertDialogContent, AlertDialogDescription, AlertDialogFooter, AlertDialogHeader, AlertDialogTitle, AlertDialogTrigger } from "../ui/alert-dialog"
 
 const STATUS: Record<CompressionStatus, { label: string; variant: "default" | "secondary" | "destructive" | "outline" }> = {
     PENDING_UPLOAD: { label: "Enviando", variant: "secondary" },
@@ -85,7 +86,7 @@ export function HistoryTable({ compressions }: { compressions: Compression[] }) 
         startTransition(async () => {
             const { error } = await deleteCompressionAction(comp.id)
             if (error) toast.error(error)
-            else toast.success(`${comp.filename} foi deletado com sucesso!`)
+            else toast.success(`${truncateFilename(comp.filename)} foi deletado com sucesso!`)
             setDeletingId(null)
         })
     }
@@ -135,8 +136,14 @@ export function HistoryTable({ compressions }: { compressions: Compression[] }) 
                                             <div className="flex h-9 w-14 flex-none items-center justify-center rounded-lg bg-[repeating-linear-gradient(135deg,var(--muted)_0,var(--muted)_0.5rem,var(--card)_0.5rem,var(--card)_1rem)]">
                                                 <PlayIcon className="size-3 fill-primary text-primary" />
                                             </div>
-                                            <div className="flex flex-col">
-                                                <span className="font-semibold text-foreground">{comp.filename}</span>
+
+                                            <div className="flex min-w-0 max-w-md flex-col">
+                                                <span
+                                                    className="truncate font-semibold text-foreground"
+                                                    title={comp.filename}
+                                                >
+                                                    {comp.filename}
+                                                </span>
                                                 <span className="font-mono text-xs text-muted-foreground">
                                                     {videoFormatLabel(comp.contentType)}
                                                 </span>
@@ -194,11 +201,26 @@ export function HistoryTable({ compressions }: { compressions: Compression[] }) 
                                                         comp.status === "QUEUED" ||
                                                         deleting
                                                     }
-                                                    onClick={() => handleDelete(comp)}
-                                                >
-                                                    <Trash />
-                                                    {deleting ? "Apagando…" : "Apagar"}
-                                                </DropdownMenuItem>
+                                                    render={<AlertDialog>
+                                                        <AlertDialogTrigger render={
+                                                            <Button variant={"destructive"} className={"w-full justify-start"}><Trash />
+                                                                Apagar</Button>
+                                                        } />
+                                                        <AlertDialogContent>
+                                                            <AlertDialogHeader>
+                                                                <AlertDialogTitle>Você tem certeza?</AlertDialogTitle>
+                                                                <AlertDialogDescription>
+                                                                    Tem certeza que deseja apagar <b>{comp.filename}</b>? Esta ação não pode ser revertida.
+                                                                </AlertDialogDescription>
+                                                            </AlertDialogHeader>
+                                                            <AlertDialogFooter>
+                                                                <AlertDialogCancel>Cancelar</AlertDialogCancel>
+                                                                <AlertDialogAction onClick={() => handleDelete(comp)}>Apagar</AlertDialogAction>
+                                                            </AlertDialogFooter>
+                                                        </AlertDialogContent>
+                                                    </AlertDialog>}
+                                                />
+
                                             </DropdownMenuContent>
                                         </DropdownMenu>
                                     </TableCell>
