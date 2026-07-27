@@ -109,3 +109,6 @@ export async function requestDownload(input: RequestDownloadInput): Promise<stri
     if (!res.ok) throw await failure(res, "Falha ao gerar o link de download.")
     return res.text()
 }
+
+// DELETE /compressor/:id lives in app/history/actions.ts instead: it runs as a
+// Server Action so it can revalidatePath("/history") and refresh the list.

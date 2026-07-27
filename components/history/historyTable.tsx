@@ -1,9 +1,11 @@
 "use client"
 
+import { deleteCompressionAction } from "@/app/history/actions"
 import { requestDownload } from "@/lib/api"
 import { formatBytes, videoFormatLabel } from "@/lib/format"
 import { Compression, CompressionStatus } from "@/lib/types"
-import { CopyIcon, DownloadIcon, FolderOpen, MoreHorizontalIcon, PlayIcon, Plus } from "lucide-react"
+import { CopyIcon, DownloadIcon, FolderOpen, MoreHorizontalIcon, PlayIcon, Plus, Trash } from "lucide-react"
+import { useState, useTransition } from "react"
 import { toast } from "sonner"
 import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
@@ -11,12 +13,12 @@ import {
     DropdownMenu,
     DropdownMenuContent,
     DropdownMenuItem,
+    DropdownMenuSeparator,
     DropdownMenuTrigger,
 } from "../ui/dropdown-menu"
 import {
     Table,
     TableBody,
-    TableCaption,
     TableCell,
     TableHead,
     TableHeader,
@@ -72,6 +74,22 @@ async function handleCopyLink(comp: Compression) {
 }
 
 export function HistoryTable({ compressions }: { compressions: Compression[] }) {
+    // The action revalidates /history, so the transition stays pending until the
+    // server component re-renders without the deleted row. deletingId keeps that
+    // pending state on the row that was clicked instead of the whole table.
+    const [isPending, startTransition] = useTransition()
+    const [deletingId, setDeletingId] = useState<string | null>(null)
+
+    function handleDelete(comp: Compression) {
+        setDeletingId(comp.id)
+        startTransition(async () => {
+            const { error } = await deleteCompressionAction(comp.id)
+            if (error) toast.error(error)
+            else toast.success(`${comp.filename} foi deletado com sucesso!`)
+            setDeletingId(null)
+        })
+    }
+
     return (
         compressions.length === 0
             ? <Empty>
@@ -109,6 +127,7 @@ export function HistoryTable({ compressions }: { compressions: Compression[] }) 
                             const status = STATUS[comp.status]
                             const percent = savings(comp.ratio)
                             const downloadable = comp.status === "COMPLETED"
+                            const deleting = isPending && deletingId === comp.id
                             return (
                                 <TableRow key={comp.id}>
                                     <TableCell>
@@ -165,6 +184,20 @@ export function HistoryTable({ compressions }: { compressions: Compression[] }) 
                                                 >
                                                     <CopyIcon />
                                                     Copiar link
+                                                </DropdownMenuItem>
+                                                <DropdownMenuSeparator />
+                                                <DropdownMenuItem
+                                                    variant="destructive"
+                                                    // The API answers 409 while the worker owns the row.
+                                                    disabled={
+                                                        comp.status === "PROCESSING" ||
+                                                        comp.status === "QUEUED" ||
+                                                        deleting
+                                                    }
+                                                    onClick={() => handleDelete(comp)}
+                                                >
+                                                    <Trash />
+                                                    {deleting ? "Apagando…" : "Apagar"}
                                                 </DropdownMenuItem>
                                             </DropdownMenuContent>
                                         </DropdownMenu>
