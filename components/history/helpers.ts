@@ -17,5 +17,6 @@ export function average(videos: Compression[]) {
     for (let i = 0; i <= videos.length - 1; i++) {
         totalRatio += videos[i].ratio ?? 0
     }
-    return Math.round(((1 - (totalRatio / videos.length)) * 100))
+    const res = Math.round(((1 - (totalRatio / videos.length)) * 100))
+    return Number.isNaN(res) ? 0 : res
 }
