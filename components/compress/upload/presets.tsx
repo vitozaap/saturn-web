@@ -10,7 +10,7 @@ import { ICompressionForm } from "./validation";
 export function Presets() {
     const { control } = useFormContext<ICompressionForm>()
     return (
-        <div className="flex items-center flex-col gap-4">
+        <div className="flex w-full items-center flex-col gap-3 sm:gap-4">
             <h1 className="text-muted-foreground/80 font-medium text-sm">Nível de compressão</h1>
             <Controller
                 control={control}
@@ -19,11 +19,15 @@ export function Presets() {
                     <RadioGroup
                         defaultValue={"MID"}
                         name={field.name}
-                        className="flex flex-1"
+                        className="flex w-full flex-col gap-2 sm:flex-row sm:gap-3"
                         value={field.value}
                         onValueChange={field.onChange}>
                         {items.map((preset) => (
-                            <FieldLabel htmlFor={preset.title} className="relative has-data-checked:border-primary has-data-checked:bg-primary/10" key={preset.selector}>
+                            <FieldLabel
+                                className="relative cursor-pointer has-data-checked:border-primary has-data-checked:bg-primary/10"
+                                key={preset.selector}
+                                onClick={() => field.onChange(preset.selector)}
+                            >
                                 {preset.recommended === true && (<Badge className="absolute -top-2.5 right-4 rotate-2 bg-coral">Recomendado</Badge>)}
                                 <Field orientation={"horizontal"} key={preset.selector}>
                                     <FieldContent>
@@ -31,7 +35,7 @@ export function Presets() {
                                         <FieldTitle>{preset.title}</FieldTitle>
                                         <FieldDescription>{preset.description}</FieldDescription>
                                     </FieldContent>
-                                    <RadioGroupItem value={preset.selector} id={preset.title} />
+                                    <RadioGroupItem value={preset.selector} />
                                 </Field>
                             </FieldLabel>
                         ))}

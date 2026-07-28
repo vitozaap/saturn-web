@@ -42,13 +42,13 @@ export default function RootLayout({
       lang="en"
       suppressHydrationWarning
       className={cn(
-        "h-full antialiased font-sans",
+        "antialiased font-sans",
         bricolage.variable,
         jakarta.variable,
         jetbrains.variable
       )}
     >
-      <body className="min-h-full flex flex-col">
+      <body className="flex min-h-dvh flex-col md:h-dvh">
         <ThemeProvider
           attribute="class"
           defaultTheme="system"
@@ -56,7 +56,7 @@ export default function RootLayout({
           disableTransitionOnChange
         >
           <Toaster />
-          <div className="absolute inset-0 z-0 flex flex-col bg-[radial-gradient(120%_75%_at_50%_0%,#E2D3FA_0%,#FAF7FE_60%)] dark:bg-[radial-gradient(120%_75%_at_50%_0%,#241B3A_0%,#15101F_60%)]">
+          <div className="relative z-0 flex flex-1 flex-col bg-app-radial md:min-h-0">
             <Suspense fallback={<HeaderSkeleton />}>
               <Header />
             </Suspense>

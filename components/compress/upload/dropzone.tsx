@@ -1,6 +1,7 @@
 "use client"
 import { cn } from "@/lib/utils";
 import { useDropzone } from "react-dropzone";
+import { Button } from "@/components/ui/button";
 import { Logo } from "../../logo";
 import { useController, useFormContext } from "react-hook-form";
 import { toast } from "sonner";
@@ -11,7 +12,7 @@ import { describeRejections } from "./rejection";
 export default function Dropzone({ className, ...props }: React.ComponentProps<"div">) {
     const { setError, clearErrors } = useFormContext<ICompressionForm>()
     const { field: { onChange } } = useController<ICompressionForm, "file">({ name: "file" })
-    const { getRootProps, getInputProps, rootRef } = useDropzone({
+    const { getRootProps, getInputProps, rootRef, open } = useDropzone({
         multiple: false,
         accept: ACCEPTED_TYPES,
         maxSize: MAX_SIZE,
@@ -45,19 +46,30 @@ export default function Dropzone({ className, ...props }: React.ComponentProps<"
     });
 
     return (
-        <div
-            className={
-                cn("flex flex-col w-full bg-primary/2.5 cursor-pointer hover:bg-primary/10 p-2 items-center justify-center border-dashed border-2 border-primary/70 rounded-xl", className)}
-            {...getRootProps()}
-            {...props}>
-            <input {...getInputProps()} />
-            <div className="flex flex-col gap-2 items-center">
-                <Logo height={64} width={64} />
-                <div className="flex flex-col gap-1 items-center">
-                    <h1 className="text-xl font-bold">Arraste um vídeo aqui</h1>
-                    <p className="text-muted-foreground text-sm">Ou clique na área para selecionar o arquivo.</p>
+        <div className={cn("flex w-full flex-col gap-3", className)}>
+            <div
+                className={
+                    cn("flex flex-col flex-1 min-h-40 w-full bg-primary/2.5 cursor-pointer hover:bg-primary/10 p-2 items-center justify-center border-dashed border-2 border-primary/70 rounded-xl")}
+                {...getRootProps()}
+                {...props}>
+                <input {...getInputProps()} />
+                <div className="flex flex-col gap-2 items-center text-center">
+                    <Logo className="size-11 sm:size-16" height={64} width={64} />
+                    <div className="flex flex-col gap-1 items-center">
+                        <h1 className="text-lg sm:text-xl font-bold">
+                            <span className="sm:hidden">Toque para escolher um vídeo</span>
+                            <span className="hidden sm:inline">Arraste um vídeo aqui</span>
+                        </h1>
+                        <p className="text-muted-foreground text-sm">
+                            <span className="sm:hidden">a gente espreme pra você</span>
+                            <span className="hidden sm:inline">Ou clique na área para selecionar o arquivo.</span>
+                        </p>
+                    </div>
                 </div>
             </div>
+            <Button type="button" size="lg" className="w-full sm:hidden" onClick={open}>
+                Escolher arquivo
+            </Button>
         </div>
     )
 }

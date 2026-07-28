@@ -1,5 +1,30 @@
 import { formatBytes } from "@/lib/format";
-import { Compression } from "@/lib/types";
+import { Compression, CompressionStatus } from "@/lib/types";
+
+export const STATUS: Record<CompressionStatus, { label: string; variant: "default" | "secondary" | "destructive" | "outline" }> = {
+    PENDING_UPLOAD: { label: "Enviando", variant: "secondary" },
+    QUEUED: { label: "Na fila", variant: "secondary" },
+    PROCESSING: { label: "Processando", variant: "secondary" },
+    COMPLETED: { label: "Concluído", variant: "default" },
+    FAILED: { label: "Falhou", variant: "destructive" },
+    EXPIRED: { label: "Expirado", variant: "outline" },
+}
+
+const dateFormatter = new Intl.DateTimeFormat("pt-BR", {
+    day: "2-digit",
+    month: "short",
+    year: "numeric",
+})
+
+export function formatDate(iso: string | null) {
+    if (!iso) return "—"
+    return dateFormatter.format(new Date(iso))
+}
+
+export function savings(ratio: number | null) {
+    if (ratio == null) return null
+    return Math.round((1 - ratio) * 100)
+}
 
 export function totalCompressed(videos: Compression[]) {
     let totalSourceSize = 0;
