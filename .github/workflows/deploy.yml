@@ -1,4 +1,4 @@
-name: Build and deploy Next to VPS
+name: Build and deploy Next.js to VPS
 
 on:
   push:
