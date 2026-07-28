@@ -30,9 +30,16 @@ export function RegisterForm() {
             password: data.password,
             callbackURL: "/history"
         })
-            .then((payload) => !payload.error ? router.push("/history") : toast.error("Ocorreu um erro ao criar sua conta", {
-                description: payload.error.message
-            }))
+            .then((payload) => {
+                if (payload.error) {
+                    toast.error("Ocorreu um erro ao criar sua conta", {
+                        description: payload.error.message
+                    })
+                    return
+                }
+                router.push("/history")
+                router.refresh()
+            })
     }
     return (
         <form onSubmit={form.handleSubmit(onSubmit)}>
