@@ -15,9 +15,14 @@ WORKDIR /app
 
 COPY --from=dependencies /app/node_modules ./node_modules
 
-COPY . . 
+COPY . .
 ENV NODE_ENV=production
 ENV NEXT_TELEMETRY_DISABLED=1
+
+# Baked into the standalone server at build time: next.config.ts rewrites
+# resolve process.env.API_URL during `next build`.
+ARG API_URL
+ENV API_URL=$API_URL
 
 RUN npm run build
 
