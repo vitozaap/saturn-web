@@ -1,0 +1,8 @@
+services:
+  web:
+    image: ghcr.io/vitozaap/saturn-web:latest
+    container_name: web
+    restart: always
+    env_file: .env
+    ports:
+      - "127.0.0.1:3000:3000"
