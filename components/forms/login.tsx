@@ -29,7 +29,7 @@ export function LoginForm() {
             fetchOptions: {
                 credentials: "include"
             }
-        }).then((payload) => !payload.error ? router.push("/history") : toast.error("Ocorreu um erro ao criar sua conta", {
+        }).then((payload) => !payload.error ? router.push("/history") : toast.error("Ocorreu um erro ao fazer login", {
             description: payload.error.message
         }))
     }
