@@ -19,20 +19,20 @@ function PosterBox({ url, label, size, tone }: { url: string | null; label: stri
     return (
         <div
             className={cn(
-                "w-full max-w-90 flex-1 overflow-hidden rounded-2xl border bg-card",
+                "flex w-full items-center gap-4 overflow-hidden rounded-2xl border bg-card p-3.5 sm:block sm:max-w-90 sm:flex-1 sm:p-0",
                 tone === "after" && "border-primary bg-primary/5 shadow-lg",
             )}
         >
             <div
-                className={cn("h-36 bg-cover bg-center", !url && "bg-muted")}
+                className={cn("h-12 w-19 shrink-0 rounded-lg bg-cover bg-center sm:h-36 sm:w-full sm:rounded-none", !url && "bg-muted")}
                 style={{
                     backgroundImage: url
                         ? `url(${url})`
                         : "repeating-linear-gradient(135deg, var(--muted) 0px, var(--muted) 9px, transparent 9px, transparent 18px)",
                 }}
             />
-            <div className="flex flex-col gap-0.5 p-4">
-                <div className={cn("font-mono text-xs font-semibold tracking-wide text-muted-foreground", tone === "after" && "text-primary")}>
+            <div className="flex min-w-0 flex-col gap-0.5 sm:p-4">
+                <div className={cn("font-mono text-2xs font-semibold tracking-wide text-muted-foreground sm:text-xs", tone === "after" && "text-primary")}>
                     {tone === "before" ? "ANTES" : "DEPOIS"}
                 </div>
                 <div className={cn("font-heading text-2xl font-extrabold tracking-tight", tone === "after" && "text-primary")}>{size}</div>
@@ -64,26 +64,26 @@ export function ResultCard({ before, after }: ResultCardProps) {
                 <div className="flex size-12 items-center justify-center rounded-full bg-primary text-white shadow-lg">
                     <Check className="size-6" />
                 </div>
-                <h2 className="font-heading text-3xl font-extrabold tracking-tight">Squish feito! Bem mais leve.</h2>
-                <div className="font-mono text-sm text-muted-foreground">
+                <h2 className="font-heading text-2xl font-extrabold tracking-tight text-balance sm:text-3xl">Squish feito! Bem mais leve.</h2>
+                <div className="font-mono text-xs break-all text-muted-foreground sm:text-sm">
                     {fileName} · {videoFormatLabel(contentType)} · preset {preset}
                 </div>
             </div>
 
-            <div className="flex w-full items-center justify-center">
+            <div className="flex w-full flex-col items-center justify-center sm:flex-row">
                 <PosterBox url={before} label="Tamanho original." size={origLabel} tone="before" />
-                <div className="z-10 -mx-4 flex size-19 shrink-0 flex-col items-center justify-center rounded-full border-4 border-background bg-coral text-white shadow-lg">
+                <div className="z-10 -my-4 flex size-19 shrink-0 flex-col items-center justify-center rounded-full border-4 border-background bg-coral text-white shadow-lg sm:my-0 sm:-mx-4">
                     <div className="font-heading text-xl font-extrabold">−{pctSaved}%</div>
-                    <div className="text-[9px] font-bold opacity-90">menor</div>
+                    <div className="text-2xs font-bold opacity-90">menor</div>
                 </div>
                 <PosterBox url={after} label="Pós squish." size={compLabel} tone="after" />
             </div>
 
-            <div className="flex items-center gap-2 text-sm font-semibold text-muted-foreground">
+            <div className="flex flex-wrap items-center justify-center gap-x-2 text-center text-sm font-semibold text-muted-foreground">
                 Você espremeu <span className="text-primary font-extrabold">{savedLabel}</span> desse vídeo.
             </div>
 
-            <div className="flex items-center gap-3">
+            <div className="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center">
                 <Button size="lg" onClick={() => actorRef.send({ type: "DOWNLOAD" })}>
                     <Download className="size-4.5" />
                     Baixar vídeo · {compLabel}
@@ -98,10 +98,8 @@ export function ResultCard({ before, after }: ResultCardProps) {
                 Automaticamente deletado em 24h.
             </div>
 
-            {/* Only anonymous visitors get the signup invite — a logged-in user
-                already has the history it advertises. */}
-            {!inviteDismissed && !sessionPending && !isRegistered && (
-                <div className="relative flex w-full items-center gap-5 rounded-2xl border border-primary bg-primary/5 p-5">
+             {!inviteDismissed && !sessionPending && !isRegistered && (
+                <div className="relative flex w-full flex-col items-start gap-4 rounded-2xl border border-primary bg-primary/5 p-5 sm:flex-row sm:items-center sm:gap-5">
                     <button
                         type="button"
                         onClick={() => setInviteDismissed(true)}
@@ -115,7 +113,7 @@ export function ResultCard({ before, after }: ResultCardProps) {
                             Crie uma conta grátis para ver seu histórico e baixar de novo quando quiser.
                         </div>
                     </div>
-                    <Link href="/register" className={buttonVariants()}>Criar conta grátis</Link>
+                    <Link href="/register" className={buttonVariants({ className: "w-full sm:w-auto" })}>Criar conta grátis</Link>
                 </div>
             )}
         </div>

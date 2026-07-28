@@ -72,10 +72,15 @@
   --shadow-opacity: var(--shadow-opacity);
   --color-shadow-color: var(--shadow-color);
   --color-destructive-foreground: var(--destructive-foreground);
-  --top-spacing: 20px;
+  /* Resolved at use-time so `bg-app-radial` follows the active theme. */
+  --background-image-app-radial: var(--app-radial);
+  /* One notch below text-xs, for the mono meta labels the design sets at 10px. */
+  --text-2xs: 0.625rem;
+  --text-2xs--line-height: 1.4;
 }
 
 :root {
+  --app-radial: radial-gradient(120% 75% at 50% 0%, #e2d3fa 0%, #faf7fe 60%);
   --background: oklch(0.9734 0.0082 301.3573);
   --foreground: oklch(0.2046 0.0437 299.2856);
   --card: oklch(1 0 0);
@@ -135,6 +140,7 @@
 }
 
 .dark {
+  --app-radial: radial-gradient(120% 75% at 50% 0%, #241b3a 0%, #15101f 60%);
   --background: oklch(0.186 0.027 301.4968);
   --foreground: oklch(0.9554 0.0082 301.3541);
   --card: oklch(0.2356 0.031 298.3432);

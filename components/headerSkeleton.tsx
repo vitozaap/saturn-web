@@ -8,18 +8,22 @@ import { Skeleton } from "./ui/skeleton";
 // so swapping in <HeaderActions /> doesn't shift the layout.
 export function HeaderSkeleton() {
     return (
-        <header className="flex w-full py-5 px-9 items-center-safe justify-between">
+        <header className="flex w-full py-4 px-5 sm:py-5 sm:px-9 items-center-safe justify-between">
             <div className="flex gap-2 items-center">
-                <Logo />
-                <h1 className="font-heading font-extrabold text-2xl tracking-tight">
+                <Logo className="size-8 sm:size-9.5" />
+                <h1 className="font-heading font-extrabold text-xl sm:text-2xl tracking-tight">
                     squish
                 </h1>
             </div>
-            <div className="flex gap-1 items-center" role="status" aria-label="Loading">
+            <div className="hidden gap-1 items-center md:flex" role="status" aria-label="Loading">
                 <Skeleton className="h-10 w-10 rounded-lg" />
                 <Skeleton className="h-10 w-28 rounded-lg" />
                 <Skeleton className="h-10 w-28 rounded-lg" />
                 <Skeleton className="h-10 w-20 rounded-lg" />
+            </div>
+             <div className="flex gap-2 items-center md:hidden" role="status" aria-label="Loading">
+                <Skeleton className="h-8 w-18 rounded-lg" />
+                <Skeleton className="size-9 rounded-lg" />
             </div>
         </header>
     );

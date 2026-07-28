@@ -32,7 +32,7 @@ export function HistoryCards({ compressions }: { compressions: Compression[] }) 
     const total = totalCompressed(compressions)
     const percent = average(compressions)
     return (
-        <div className="flex items-center gap-2 ">
+        <div className="grid w-full grid-cols-3 items-center gap-2 md:flex md:w-auto">
             {compressions.length === 0 ? "" : <> <Card info={compressions.length} caption="vídeos" />
                 <Card variant={"active"} info={total} caption="comprimidos" />
                 <Card info={`-${percent}%`} caption="média" /></>}
