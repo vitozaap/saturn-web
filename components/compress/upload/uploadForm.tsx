@@ -29,22 +29,21 @@ export function UploadForm() {
     }
     return (
         <FormProvider {...methods}>
-            <main className="flex flex-col items-center gap-6 justify-center max-w-2xl h-full">
-                <section className="flex flex-col gap-4 items-center">
+            <main className="flex w-full flex-col items-center gap-6 justify-center max-w-2xl md:h-full">
+                <section className="flex flex-col gap-3 sm:gap-4 items-center">
                     <Badge variant={"secondary"} className="-rotate-2">Grátis · rápido · sem marca d&apos;água</Badge>
-                    <h1 className="font-heading font-extrabold tracking-tighter text-6xl max-w-md text-center">
+                    <h1 className="font-heading font-extrabold tracking-tighter text-4xl sm:text-5xl lg:text-6xl max-w-md text-center text-balance">
                         Dê um <span className="text-primary underline decoration-wavy decoration-4 decoration-coral">squish</span> nos seus vídeos.
                     </h1>
-                    <p className="text-muted-foreground max-w-xl text-center text-lg">Comprima qualquer vídeo e baixe na hora! Sem perder a qualidade que realmente importa.</p>
+                    <p className="text-muted-foreground max-w-xl text-center text-pretty sm:text-lg">Comprima qualquer vídeo e baixe na hora! Sem perder a qualidade que realmente importa.</p>
                 </section>
-                <form onSubmit={methods.handleSubmit(onUpload, onError)} className="flex flex-col gap-5 h-7/12">
-                    <Dropzone className="h-full" />
+                <form onSubmit={methods.handleSubmit(onUpload, onError)} className="flex w-full flex-col gap-5 md:h-7/12">
+                    <Dropzone className="md:h-full" />
                     <Presets />
                 </form>
                 <div className="flex">
-                    <p className="text-muted-foreground text-xs">Até 500MB - <Button variant={"link"} nativeButton={false} size={"xs"} className={"p-0"} render={<Link href="/login">Faça login</Link>} /> para mais funcionalidades.</p>
+                    <p className="text-muted-foreground text-xs text-center text-pretty">Até 500MB - <Button variant={"link"} nativeButton={false} size={"xs"} className={"p-0"} render={<Link href="/login">Faça login</Link>} /> para mais funcionalidades.</p>
                 </div>
             </main>
-
         </FormProvider>)
 }
