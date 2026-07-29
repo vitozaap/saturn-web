@@ -34,7 +34,7 @@ Na prática o sistema é springy no **conteúdo** e nos **momentos de recompensa
 
 ## 2. Entradas de página
 
-- **Landing (`app/page.tsx`):** cascata via `variants` + `staggerChildren` ≈ 80ms: header → título → subtítulo → dropzone (spring `rise`); o badge "até 500 MB" estala por último com rotação (spring `pop`). Duração total < 700ms.
+- **Landing (`app/page.tsx`):** cascata com delays explícitos múltiplos de `STAGGER` (≈ 80ms): header → título → subtítulo → dropzone (spring `rise`); o badge estala por último com rotação (spring `pop`, delay `STAGGER * 5`). Percepção de conclusão ≈ 500ms; o assentamento completo do badge chega a ≈ 850ms. O `h1` anima só `y` (sem `opacity`) para continuar pintável no HTML do servidor e seguir elegível a LCP.
 - **Histórico / Login / Registro:** o bloco principal (tabela, card de auth) entra como unidade única com `rise`. Header estático.
 - Entradas rodam **apenas no mount da rota** e fazem o papel de transição de navegação. Não há exit animations entre rotas (o App Router não as suporta bem e não são necessárias).
 
@@ -42,7 +42,8 @@ Na prática o sistema é springy no **conteúdo** e nos **momentos de recompensa
 
 - O contêiner do card é **um único elemento persistente** através de `idle → sending → compressing → error → result`, com `layout` animation: borda tracejada → sólida, dimensões se ajustam com spring `pop`.
 - O conteúdo interno troca com `AnimatePresence mode="popLayout"` + crossfade rápido.
-- **Reestruturação necessária:** `UploaderScreens` (`components/compress/upload/uploader/uploader.tsx`) deixa de trocar cards inteiros e passa a renderizar um `MotionCardShell` único que recebe o miolo de cada estado. `sending-card`, `compressing-card`, `error-card` e `result-card` viram "miolos" (conteúdo interno), não cards completos. `processing-card-shell` é absorvido/substituído pelo novo shell.
+- **Arquitetura (como foi implementado):** `UploaderScreens` (`components/compress/upload/uploader/uploader.tsx`) continua trocando cards inteiros dentro de um `AnimatePresence mode="popLayout"`; a continuidade vem de um `layoutId="uploader-card"` **compartilhado** entre a área tracejada do dropzone, o `processing-card-shell` (envio/compressão) e o `error-card`. O Motion faz o FLIP entre os dois retângulos e o crossfade. Não existe um `MotionCardShell` único: cada card permanece um componente completo.
+- **Requisito do `popLayout`:** todo filho direto do `AnimatePresence` precisa aceitar `ref` (React 19, sem `forwardRef`) e encaminhá-lo ao seu elemento `m.*` raiz. Sem isso o pop falha em silêncio e o card que sai continua no fluxo, espremendo o que entra.
 - **Erro:** o card treme (shake horizontal curto) ao entrar no estado de erro.
 - **Resultado:** o bloco de resultado NÃO participa do morph (geometrias incompatíveis — decisão de code review): entra com `rise` + exit fade. O badge de % estala com `pop` + rotação; o confete dispara junto (e é omitido sob reduced motion). O morph fica entre dropzone ↔ cards de processamento/erro.
 
@@ -54,7 +55,7 @@ Sheet mobile, dropdown do avatar, AlertDialog, tabs e toasts (sonner) continuam 
 
 - **Dropzone com arquivo arrastado por cima (`drag-active`):** scale-up com `pop` + borda acesa — junto com o resultado, o momento mais springy da app.
 - **Botões de ação primária:** `whileTap` scale 0.97 com `settle`. Sem `whileHover` de escala (hover permanece no CSS atual).
-- **Barra de progresso do upload:** largura anima com `settle` a cada tick de % — sem bounce (progresso não pode recuar visualmente).
+- **Barra de progresso do upload:** preenchimento de largura total transladado (`x: percent - 100%`) com `settle` a cada tick de % — transform, nunca `width`, e sem bounce perceptível (recuo de pico < 0,2px), preservando a ponta arredondada.
 - **Linhas de status rotativas** do "Comprimindo": troca com slide vertical + fade via `AnimatePresence`.
 
 ## Tratamento de erros e casos-limite
@@ -62,6 +63,7 @@ Sheet mobile, dropdown do avatar, AlertDialog, tabs e toasts (sonner) continuam 
 - **Reduced motion:** animações Motion cobertas globalmente pelo `MotionConfig` (fades apenas); as View Transitions pré-existentes (login/registro) são neutralizadas por regra `prefers-reduced-motion` em `globals.css`.
 - **Troca rápida de estados** (ex.: erro imediato após envio): `AnimatePresence mode="popLayout"` garante que o conteúdo que sai não empurre o que entra; springs `settle` em saídas evitam sobreposição visual.
 - **Cancelamento durante upload:** volta ao estado `idle` pelo mesmo morph (card → dropzone tracejada).
+- **Cascata só na primeira vez:** a cascata da landing roda no mount da rota, mas **não** ao voltar para `idle` depois de uma tentativa (flag `hasLeftIdle` em `UploaderScreens` → prop `animateEntrance` em `UploadForm`). Sem isso o morph de volta aterrissaria num destino com `opacity: 0`.
 
 ## Testes e validação
 
@@ -69,6 +71,12 @@ Sheet mobile, dropdown do avatar, AlertDialog, tabs e toasts (sonner) continuam 
 - Validação visual manual dos fluxos: landing (primeiro load), upload completo até resultado, erro + retry, cancelamento, navegação para histórico/login.
 - Verificar `prefers-reduced-motion` emulado no DevTools: nenhuma animação de transform deve rodar.
 - Confirmar que sheet/dropdown/dialog continuam idênticos (nenhuma regressão de chrome).
+
+O `popLayout` e o morph não emitem erro de lint, de tipo nem de console quando quebram — a verificação precisa inspecionar o DOM durante a transição:
+
+- **Morph engatado:** durante a troca, o elemento que sai tem `data-motion-pop-id` e `position: absolute` (fora do fluxo); o que entra tem um `transform` interpolando da geometria antiga para a sua.
+- **Sem "piscar" lado a lado:** em nenhum frame dois cards ocupam o fluxo simultaneamente.
+- **Reduced motion:** o selo de % precisa terminar em `opacity: 1` / `transform: none` (o risco real é ficar preso em `scale: 0`), e o confete não deve renderizar nenhuma partícula.
 
 ## Fora de escopo
 
