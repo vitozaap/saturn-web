@@ -7,7 +7,7 @@ import { m, useReducedMotion } from "motion/react"
 
 import { Button, buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
-import { formatBytes, videoFormatLabel } from "@/lib/format"
+import { formatBytes, formatDelta, sizeDelta, videoFormatLabel } from "@/lib/format"
 import { useIsRegistered } from "@/lib/useIsRegistered"
 import { pop, rise, settle } from "@/lib/motion"
 import { Tap } from "@/components/motion/tap"
@@ -59,19 +59,22 @@ export function ResultCard({ before, after, ref }: ResultCardProps) {
 
     const sourceSize = compression?.sourceSize ? Number(compression.sourceSize) : 0
     const outputSize = compression?.outputSize ? Number(compression.outputSize) : 0
-    const pctSaved = compression?.ratio != null ? Math.round((1 - compression.ratio) * 100) : 0
+    const delta = sizeDelta(compression?.ratio ?? null) ?? { percent: 0, inflated: false }
     const origLabel = formatBytes(sourceSize)
     const compLabel = formatBytes(outputSize)
-    const savedLabel = formatBytes(Math.max(0, sourceSize - outputSize))
+    const diffLabel = formatBytes(Math.abs(sourceSize - outputSize))
 
     return (
         <m.div ref={ref} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={rise} exit={{ opacity: 0, transition: settle }} className="flex w-full max-w-2xl flex-col items-center gap-6">
             <div className="flex flex-col items-center gap-1.5 text-center">
                 <div className="relative flex size-12 items-center justify-center rounded-full bg-primary text-white shadow-lg">
-                    <ConfettiBurst />
+                    {/* Nothing to celebrate when the file came out bigger. */}
+                    {!delta.inflated && <ConfettiBurst />}
                     <Check className="relative size-6" />
                 </div>
-                <h2 className="font-heading text-2xl font-extrabold tracking-tight text-balance sm:text-3xl">Squish feito! Bem mais leve.</h2>
+                <h2 className="font-heading text-2xl font-extrabold tracking-tight text-balance sm:text-3xl">
+                    {delta.inflated ? "Pronto! Esse já estava no limite." : "Squish feito! Bem mais leve."}
+                </h2>
                 <div className="font-mono text-xs break-all text-muted-foreground sm:text-sm">
                     {fileName} · {videoFormatLabel(contentType)} · preset {preset}
                 </div>
@@ -83,16 +86,32 @@ export function ResultCard({ before, after, ref }: ResultCardProps) {
                     initial={{ scale: 0, rotate: -20 }}
                     animate={{ scale: 1, rotate: 0 }}
                     transition={{ ...pop, delay: shouldReduceMotion ? 0 : 0.3 }}
-                    className="z-10 -my-4 flex size-19 shrink-0 flex-col items-center justify-center rounded-full border-4 border-background bg-coral text-white shadow-lg sm:my-0 sm:-mx-4"
+                    className={cn(
+                        "z-10 -my-4 flex size-19 shrink-0 flex-col items-center justify-center rounded-full border-4 border-background shadow-lg sm:my-0 sm:-mx-4",
+                        // Coral is the celebratory accent; an inflated result
+                        // gets the neutral treatment instead.
+                        delta.inflated ? "bg-muted text-muted-foreground" : "bg-coral text-white",
+                    )}
                 >
-                    <div className="font-heading text-xl font-extrabold">−{pctSaved}%</div>
-                    <div className="text-2xs font-bold opacity-90">menor</div>
+                    <div className="font-heading text-xl font-extrabold">{formatDelta(delta)}</div>
+                    <div className="text-2xs font-bold opacity-90">{delta.inflated ? "maior" : "menor"}</div>
                 </m.div>
                 <PosterBox url={after} label="Pós squish." size={compLabel} tone="after" />
             </div>
 
             <div className="flex flex-wrap items-center justify-center gap-x-2 text-center text-sm font-semibold text-muted-foreground">
-                Você espremeu <span className="text-primary font-extrabold">{savedLabel}</span> desse vídeo.
+                {delta.inflated ? (
+                    <>
+                        Esse vídeo já estava bem otimizado — ficou{" "}
+                        <span className="font-extrabold">{diffLabel}</span> maior. Vale ficar com o
+                        original.
+                    </>
+                ) : (
+                    <>
+                        Você espremeu <span className="font-extrabold text-primary">{diffLabel}</span>{" "}
+                        desse vídeo.
+                    </>
+                )}
             </div>
 
             <div className="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center">
