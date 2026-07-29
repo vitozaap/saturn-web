@@ -17,6 +17,28 @@ export const settle: Transition = { type: "spring", stiffness: 300, damping: 32 
 /** Gap between staggered landing elements (seconds). */
 export const STAGGER = 0.08
 
+/**
+ * Ambient loops — the only non-spring transitions here. Idle ornaments have no
+ * target to settle on, so a spring has nothing to do; `mirror` plays the
+ * half-cycle back and forth, which is why the durations are half of the
+ * design's full period. Reduced motion is handled by the provider's
+ * `MotionConfig reducedMotion="user"`, not per component.
+ */
+export const drift: Transition = {
+    duration: 2.5,
+    ease: "easeInOut",
+    repeat: Infinity,
+    repeatType: "mirror",
+}
+
+/** Horizontal squeeze of the "a gente espreme" step icon. */
+export const squeeze: Transition = {
+    duration: 0.9,
+    ease: "easeInOut",
+    repeat: Infinity,
+    repeatType: "mirror",
+}
+
 type RiseProps = Pick<HTMLMotionProps<"div">, "initial" | "animate" | "transition">
 
 /** Fade+rise entrance props for m.* elements; delay in seconds. */

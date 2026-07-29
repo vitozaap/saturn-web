@@ -6,6 +6,7 @@ import { usePathname } from "next/navigation"
 import { Book, LogOut, Menu, Plus } from "lucide-react"
 
 import { authClient } from "@/lib/auth"
+import { cn } from "@/lib/utils"
 import { isSignedIn, NAV_PAGES, type NavUser } from "./navItems"
 import { Avatar, AvatarFallback, AvatarImage } from "./ui/avatar"
 import { Button, buttonVariants } from "./ui/button"
@@ -29,11 +30,25 @@ const itemClass = buttonVariants({
     className: "w-full justify-start gap-3",
 })
 
-function NavItem({ href, children }: { href: string; children: React.ReactNode }) {
+function NavItem({
+    href,
+    active,
+    children,
+}: {
+    href: string
+    active?: boolean
+    children: React.ReactNode
+}) {
     // Closing on click is not automatic: without SheetClose the panel would
     // stay open on top of the page it just navigated to.
     return (
-        <SheetClose nativeButton={false} className={itemClass} render={<Link href={href} />}>
+        <SheetClose
+            nativeButton={false}
+            // The sheet has no designed active state; the wavy underline of the
+            // inline nav would fight the icons here, so it just goes primary.
+            className={cn(itemClass, active && "font-bold text-primary")}
+            render={<Link href={href} aria-current={active ? "page" : undefined} />}
+        >
             {children}
         </SheetClose>
     )
@@ -82,13 +97,13 @@ export function MobileNav({ user }: { user: NavUser | undefined }) {
                         </NavItem>
                     )}
                     {NAV_PAGES.map(({ href, label, icon: Icon }) => (
-                        <NavItem key={href} href={href}>
+                        <NavItem key={href} href={href} active={path === href}>
                             <Icon />
                             {label}
                         </NavItem>
                     ))}
                     {signedIn && (
-                        <NavItem href="/history">
+                        <NavItem href="/history" active={path === "/history"}>
                             <Book />
                             Histórico
                         </NavItem>

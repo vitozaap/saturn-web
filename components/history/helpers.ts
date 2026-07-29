@@ -1,4 +1,4 @@
-import { formatBytes } from "@/lib/format";
+import { formatBytes, sizeDelta, type SizeDelta } from "@/lib/format";
 import { Compression, CompressionStatus } from "@/lib/types";
 
 export const STATUS: Record<CompressionStatus, { label: string; variant: "default" | "secondary" | "destructive" | "outline" }> = {
@@ -21,10 +21,6 @@ export function formatDate(iso: string | null) {
     return dateFormatter.format(new Date(iso))
 }
 
-export function savings(ratio: number | null) {
-    if (ratio == null) return null
-    return Math.round((1 - ratio) * 100)
-}
 
 export function totalCompressed(videos: Compression[]) {
     let totalSourceSize = 0;
@@ -37,11 +33,11 @@ export function totalCompressed(videos: Compression[]) {
     return formatBytes(total)
 }
 
-export function average(videos: Compression[]) {
+export function average(videos: Compression[]): SizeDelta {
     let totalRatio = 0
     for (let i = 0; i <= videos.length - 1; i++) {
         totalRatio += videos[i].ratio ?? 0
     }
-    const res = Math.round(((1 - (totalRatio / videos.length)) * 100))
-    return Number.isNaN(res) ? 0 : res
+    const mean = totalRatio / videos.length
+    return sizeDelta(Number.isNaN(mean) ? 1 : mean) ?? { percent: 0, inflated: false }
 }

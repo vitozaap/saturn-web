@@ -2,19 +2,19 @@
 
 import { Clock, DownloadIcon, PlayIcon } from "lucide-react"
 
-import { formatBytes, videoFormatLabel } from "@/lib/format"
+import { formatBytes, formatDelta, sizeDelta, videoFormatLabel } from "@/lib/format"
 import { Compression } from "@/lib/types"
 import { Badge } from "../ui/badge"
 import { Button } from "../ui/button"
 import { HistoryEmpty } from "./emptyState"
-import { formatDate, savings, STATUS } from "./helpers"
+import { formatDate, STATUS } from "./helpers"
 import { RowActions } from "./rowActions"
 import { useCompressionActions } from "./useCompressionActions"
 
 function HistoryCard({ comp }: { comp: Compression }) {
     const actions = useCompressionActions(comp)
     const status = STATUS[comp.status]
-    const percent = savings(comp.ratio)
+    const delta = sizeDelta(comp.ratio)
     const downloadable = comp.status === "COMPLETED"
 
     return (
@@ -31,8 +31,13 @@ function HistoryCard({ comp }: { comp: Compression }) {
                         {formatDate(comp.completedAt ?? comp.createdAt)} · {videoFormatLabel(comp.contentType)}
                     </span>
                 </div>
-                {percent != null && (
-                    <Badge variant="secondary" className="flex-none font-mono">-{percent}%</Badge>
+                {delta != null && (
+                    <Badge
+                        variant={delta.inflated ? "outline" : "secondary"}
+                        className="flex-none font-mono"
+                    >
+                        {formatDelta(delta)}
+                    </Badge>
                 )}
             </div>
 

@@ -24,7 +24,18 @@ export function HeaderActions({ user }: { user: NavUser | undefined }) {
             <div className='hidden gap-1 items-center md:flex'>
                 <ThemeSwitch />
                 {NAV_PAGES.map(({ href, label }) => (
-                    <Link key={href} className={buttonVariants({ size: "sm", variant: "ghost" })} href={href}>{label}</Link>
+                    <Link
+                        key={href}
+                        href={href}
+                        aria-current={path === href ? "page" : undefined}
+                        className={buttonVariants({
+                            size: "sm",
+                            variant: "ghost",
+                            // The design marks the current screen with a coral wavy
+                            // underline rather than a filled pill.
+                            className: path === href && "font-bold text-primary underline decoration-coral decoration-wavy decoration-2 underline-offset-6 hover:text-primary",
+                        })}
+                    >{label}</Link>
                 ))}
                 {signedIn ? (
                     <>

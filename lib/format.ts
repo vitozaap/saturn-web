@@ -9,7 +9,22 @@ export function formatBytes(bytes: number) {
         return `${rounded} GB`
     }
     if (bytes >= MB) return `${Math.round(bytes / MB)} MB`
+    if (bytes <= 0) return "0 KB"
     return `${Math.max(1, Math.round(bytes / KB))} KB`
+}
+
+
+export type SizeDelta = { percent: number; inflated: boolean }
+
+export function sizeDelta(ratio: number | null): SizeDelta | null {
+    if (ratio == null) return null
+    const saved = Math.round((1 - ratio) * 100)
+    return { percent: Math.abs(saved), inflated: saved < 0 }
+}
+
+export function formatDelta({ percent, inflated }: SizeDelta) {
+    if (percent === 0) return "0%"
+    return `${inflated ? "+" : "−"}${percent}%`
 }
 
 /** "3:24" — falls back to "" for an unknown/non-finite duration. */

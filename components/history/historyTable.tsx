@@ -1,6 +1,6 @@
 "use client"
 
-import { formatBytes, videoFormatLabel } from "@/lib/format"
+import { formatBytes, formatDelta, sizeDelta, videoFormatLabel } from "@/lib/format"
 import { Compression } from "@/lib/types"
 import { PlayIcon } from "lucide-react"
 import { Badge } from "../ui/badge"
@@ -13,14 +13,14 @@ import {
     TableRow,
 } from "../ui/table"
 import { HistoryEmpty } from "./emptyState"
-import { formatDate, savings, STATUS } from "./helpers"
+import { formatDate, STATUS } from "./helpers"
 import { RowActions } from "./rowActions"
 import { useCompressionActions } from "./useCompressionActions"
 
 function HistoryRow({ comp }: { comp: Compression }) {
     const actions = useCompressionActions(comp)
     const status = STATUS[comp.status]
-    const percent = savings(comp.ratio)
+    const delta = sizeDelta(comp.ratio)
 
     return (
         <TableRow>
@@ -54,8 +54,10 @@ function HistoryRow({ comp }: { comp: Compression }) {
                 </span>
             </TableCell>
             <TableCell>
-                {percent != null ? (
-                    <Badge variant="secondary" className="font-mono">-{percent}%</Badge>
+                {delta != null ? (
+                    <Badge variant={delta.inflated ? "outline" : "secondary"} className="font-mono">
+                        {formatDelta(delta)}
+                    </Badge>
                 ) : (
                     <span className="text-muted-foreground">—</span>
                 )}
