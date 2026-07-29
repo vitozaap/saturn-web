@@ -16,9 +16,9 @@ export function UploadProgressBar() {
         <div className="flex items-center gap-3.5">
             <div className="relative h-3 flex-1 overflow-hidden rounded-full bg-primary/15">
                 <m.div
-                    className="absolute inset-y-0 left-0 w-full origin-left rounded-full bg-primary"
+                    className="absolute inset-y-0 left-0 w-full rounded-full bg-primary"
                     initial={false}
-                    animate={{ scaleX: percent / 100 }}
+                    animate={{ x: `${percent - 100}%` }}
                     transition={settle}
                 />
             </div>

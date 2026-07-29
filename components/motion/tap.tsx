@@ -11,7 +11,7 @@ import { cn } from "@/lib/utils"
  */
 export function Tap({ className, children }: { className?: string; children: React.ReactNode }) {
     return (
-        <m.div whileTap={{ scale: 0.97 }} transition={settle} className={cn("inline-flex", className)}>
+        <m.div tabIndex={-1} whileTap={{ scale: 0.97 }} transition={settle} className={cn("inline-flex", className)}>
             {children}
         </m.div>
     )

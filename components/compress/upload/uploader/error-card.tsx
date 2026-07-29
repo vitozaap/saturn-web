@@ -28,10 +28,10 @@ export function ErrorCard({ ref }: { ref?: React.Ref<HTMLDivElement> }) {
                     {error ?? "Não foi possível concluir a compressão. Tente novamente."}
                 </p>
                 <div className="mt-6 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
-                    <Tap className="w-full sm:w-auto">
+                    <Tap className="w-full shrink-0 sm:w-auto">
                         <Button className="w-full" onClick={() => actorRef.send({ type: "RETRY" })}>Enviar novamente</Button>
                     </Tap>
-                    <Tap className="w-full sm:w-auto">
+                    <Tap className="w-full shrink-0 sm:w-auto">
                         <Button variant="outline" className="w-full" onClick={() => actorRef.send({ type: "RESET" })}>
                             Escolher outro vídeo
                         </Button>

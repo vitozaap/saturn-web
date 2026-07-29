@@ -11,7 +11,7 @@ export const pop: Transition = { type: "spring", stiffness: 500, damping: 18, ma
 /** Entrance spring: rises with a slight overshoot. Page/block entrances. */
 export const rise: Transition = { type: "spring", stiffness: 260, damping: 24 }
 
-/** No-bounce spring: exits, progress, adjustments. */
+/** No-bounce spring in practice (ζ ≈ 0.92, worst-case retreat < 0.2px): exits, progress, adjustments. Do not retune downward. */
 export const settle: Transition = { type: "spring", stiffness: 300, damping: 32 }
 
 /** Gap between staggered landing elements (seconds). */

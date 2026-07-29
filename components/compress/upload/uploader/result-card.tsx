@@ -96,13 +96,13 @@ export function ResultCard({ before, after, ref }: ResultCardProps) {
             </div>
 
             <div className="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center">
-                <Tap className="w-full sm:w-auto">
+                <Tap className="w-full shrink-0 sm:w-auto">
                     <Button size="lg" className="w-full" onClick={() => actorRef.send({ type: "DOWNLOAD" })}>
                         <Download className="size-4.5" />
                         Baixar vídeo · {compLabel}
                     </Button>
                 </Tap>
-                <Tap className="w-full sm:w-auto">
+                <Tap className="w-full shrink-0 sm:w-auto">
                     <Button size="lg" variant="outline" className="w-full" onClick={() => actorRef.send({ type: "RESET" })}>
                         Comprimir outro
                     </Button>
