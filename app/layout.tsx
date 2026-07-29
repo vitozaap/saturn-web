@@ -9,6 +9,7 @@ import "./globals.css";
 import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import { Header } from "@/components/header";
+import { MotionProvider } from "@/components/motion-provider";
 import { Suspense } from "react";
 import { HeaderSkeleton } from "@/components/headerSkeleton";
 
@@ -55,13 +56,15 @@ export default function RootLayout({
           enableSystem
           disableTransitionOnChange
         >
-          <Toaster />
-          <div className="relative z-0 flex flex-1 flex-col bg-app-radial md:min-h-0">
-            <Suspense fallback={<HeaderSkeleton />}>
-              <Header />
-            </Suspense>
-            {children}
-          </div>
+          <MotionProvider>
+            <Toaster />
+            <div className="relative z-0 flex flex-1 flex-col bg-app-radial md:min-h-0">
+              <Suspense fallback={<HeaderSkeleton />}>
+                <Header />
+              </Suspense>
+              {children}
+            </div>
+          </MotionProvider>
         </ThemeProvider>
       </body>
     </html>
