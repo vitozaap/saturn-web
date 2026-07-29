@@ -14,6 +14,7 @@ export function ErrorCard({ ref }: { ref?: React.Ref<HTMLDivElement> }) {
     return (
         <m.div ref={ref} layoutId="uploader-card" transition={pop} className="w-full max-w-xl rounded-3xl border border-coral/60 bg-card shadow-lg">
             <m.div
+                role="alert"
                 animate={{ x: [0, -10, 10, -6, 6, 0] }}
                 transition={{ duration: 0.45, delay: 0.15 }}
                 className="p-6 text-center sm:p-10"
