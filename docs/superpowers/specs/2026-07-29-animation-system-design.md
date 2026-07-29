@@ -59,7 +59,7 @@ Sheet mobile, dropdown do avatar, AlertDialog, tabs e toasts (sonner) continuam 
 
 ## Tratamento de erros e casos-limite
 
-- **Reduced motion:** coberto globalmente pelo `MotionConfig` (fades apenas).
+- **Reduced motion:** animações Motion cobertas globalmente pelo `MotionConfig` (fades apenas); as View Transitions pré-existentes (login/registro) são neutralizadas por regra `prefers-reduced-motion` em `globals.css`.
 - **Troca rápida de estados** (ex.: erro imediato após envio): `AnimatePresence mode="popLayout"` garante que o conteúdo que sai não empurre o que entra; springs `settle` em saídas evitam sobreposição visual.
 - **Cancelamento durante upload:** volta ao estado `idle` pelo mesmo morph (card → dropzone tracejada).
 
