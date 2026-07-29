@@ -18,14 +18,9 @@ const eslintConfig = defineConfig([
       "no-restricted-imports": [
         "error",
         {
-          paths: [
+          patterns: [
             {
-              name: "motion/react",
-              importNames: ["motion"],
-              message: "Use `m` instead — LazyMotion strict is enabled.",
-            },
-            {
-              name: "framer-motion",
+              group: ["motion/react*", "framer-motion", "framer-motion/*"],
               importNames: ["motion"],
               message: "Use `m` instead — LazyMotion strict is enabled.",
             },
