@@ -1,6 +1,6 @@
 "use client"
 
-import { useEffect } from "react"
+import { useEffect, useState } from "react"
 import { toast } from "sonner"
 import { AnimatePresence } from "motion/react"
 
@@ -63,9 +63,19 @@ function UploaderScreens() {
         .filter(Boolean)
         .join(" · ")
 
+    // The landing cascade only plays the first time idle is shown on this
+    // mount. Once the user has left idle (submitted, errored, ...), a
+    // return to idle is a pure morph target — the m.form re-entering with
+    // its cascade's initial opacity:0 would otherwise land invisible.
+    // "Adjust state while rendering" (react.dev/learn/you-might-not-need-an-effect):
+    // a guarded setState call in the render body itself, not in an effect or
+    // a ref — the guard makes it a no-op once hasLeftIdle is already true.
+    const [hasLeftIdle, setHasLeftIdle] = useState(false)
+    if (screen !== "idle" && !hasLeftIdle) setHasLeftIdle(true)
+
     return (
-        <AnimatePresence mode="popLayout" initial={false}>
-            {screen === "idle" && <UploadForm key="idle" />}
+        <AnimatePresence mode="popLayout">
+            {screen === "idle" && <UploadForm key="idle" animateEntrance={!hasLeftIdle} />}
             {screen === "sending" && <SendingCard key="sending" posterUrl={poster.before} fileName={fileName} metaLine={metaLine} />}
             {screen === "compressing" && <CompressingCard key="compressing" posterUrl={poster.before} fileName={fileName} metaLine={metaLine} />}
             {screen === "error" && <ErrorCard key="error" />}

@@ -5,6 +5,7 @@ import { UploadProgressBar } from "./upload-progress-bar"
 import { UploaderContext } from "./uploader-context"
 
 type SendingCardProps = {
+    ref?: React.Ref<HTMLDivElement>
     posterUrl: string | null
     fileName: string
     metaLine: string
@@ -16,7 +17,7 @@ const STATUS_LINE: Record<"creating" | "uploading" | "confirming", string> = {
     confirming: "Confirmando o envio…",
 }
 
-export function SendingCard({ posterUrl, fileName, metaLine }: SendingCardProps) {
+export function SendingCard({ ref, posterUrl, fileName, metaLine }: SendingCardProps) {
     const phase = UploaderContext.useSelector((snapshot) =>
         snapshot.matches("uploading") ? "uploading" : snapshot.matches("confirming") ? "confirming" : "creating",
     )
@@ -25,6 +26,7 @@ export function SendingCard({ posterUrl, fileName, metaLine }: SendingCardProps)
 
     return (
         <ProcessingCardShell
+            ref={ref}
             posterUrl={posterUrl}
             fileName={fileName}
             metaLine={metaLine}

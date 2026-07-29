@@ -8,6 +8,7 @@ import { cn } from "@/lib/utils"
 import { pop } from "@/lib/motion"
 
 type ProcessingCardShellProps = {
+    ref?: React.Ref<HTMLDivElement>
     posterUrl: string | null
     fileName: string
     metaLine: string
@@ -20,6 +21,7 @@ type ProcessingCardShellProps = {
 }
 
 export function ProcessingCardShell({
+    ref,
     posterUrl,
     fileName,
     metaLine,
@@ -31,7 +33,7 @@ export function ProcessingCardShell({
     children,
 }: ProcessingCardShellProps) {
     return (
-        <m.div layoutId="uploader-card" transition={pop} className="w-full max-w-xl rounded-3xl border bg-card p-5 shadow-lg sm:p-8">
+        <m.div ref={ref} layoutId="uploader-card" transition={pop} className="w-full max-w-xl rounded-3xl border bg-card p-5 shadow-lg sm:p-8">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
                 <div className="flex min-w-0 items-center gap-3 sm:contents">
                     <div
