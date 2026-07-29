@@ -1,3 +1,4 @@
+import { Entrance } from "@/components/motion/entrance";
 import { HistoryCards } from "@/components/history/historyCards";
 import { HistoryList } from "@/components/history/historyList";
 import { HistoryTable } from "@/components/history/historyTable";
@@ -20,7 +21,7 @@ export default async function History() {
     const compressions = await listCompressions()
     return (
         <main className="flex flex-col flex-1 items-center w-full md:min-h-0 md:overflow-hidden">
-            <section className="flex flex-col w-full sm:w-9/12 md:w-8/12 gap-4 px-5 pb-6 sm:px-6 md:flex-1 md:min-h-0 md:gap-3 md:pb-4">
+            <Entrance className="flex flex-col w-full sm:w-9/12 md:w-8/12 gap-4 px-5 pb-6 sm:px-6 md:flex-1 md:min-h-0 md:gap-3 md:pb-4">
                 <div className="flex flex-col gap-4 md:flex-row md:items-center md:justify-between">
                     <div className="flex flex-col gap-2">
                         <h1 className="font-heading text-2xl sm:text-3xl font-bold">Suas compressões</h1>
@@ -40,7 +41,7 @@ export default async function History() {
                         <Plus /> Novo vídeo
                     </Link>
                 )}
-            </section>
+            </Entrance>
         </main>
     )
 }
