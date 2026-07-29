@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils";
 import { Toaster } from "@/components/ui/sonner";
 import { Header } from "@/components/header";
 import { MotionProvider } from "@/components/motion-provider";
+import { Entrance } from "@/components/motion/entrance";
 import { Suspense } from "react";
 import { HeaderSkeleton } from "@/components/headerSkeleton";
 
@@ -59,9 +60,11 @@ export default function RootLayout({
           <MotionProvider>
             <Toaster />
             <div className="relative z-0 flex flex-1 flex-col bg-app-radial md:min-h-0">
-              <Suspense fallback={<HeaderSkeleton />}>
-                <Header />
-              </Suspense>
+              <Entrance>
+                <Suspense fallback={<HeaderSkeleton />}>
+                  <Header />
+                </Suspense>
+              </Entrance>
               {children}
             </div>
           </MotionProvider>
