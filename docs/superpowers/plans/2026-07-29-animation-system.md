@@ -464,7 +464,7 @@ git commit -m "feat: add continuous morph between dropzone and processing card"
 
 - [ ] **Step 1: Converter o card**
 
-O card de erro entra no morph (mesmo `layoutId`) e treme ao aparecer (spec §3). O shake fica num `m.div` **interno** — não no elemento com `layoutId`, para não brigar com o transform do FLIP:
+O card de erro entra no morph (mesmo `layoutId`) e treme ao aparecer (spec §3). O shake fica num `m.div` **interno** — não no elemento com `layoutId`, para não brigar com o transform do FLIP. **Obrigatório:** como filho direto de `AnimatePresence mode="popLayout"`, o componente precisa aceitar `ref` e encaminhá-lo ao `m.div` raiz (React 19, sem `forwardRef`) — sem isso o pop não engata:
 
 ```tsx
 "use client"
@@ -476,12 +476,12 @@ import { Button } from "@/components/ui/button"
 import { pop } from "@/lib/motion"
 import { UploaderContext } from "./uploader-context"
 
-export function ErrorCard() {
+export function ErrorCard({ ref }: { ref?: React.Ref<HTMLDivElement> }) {
     const error = UploaderContext.useSelector((snapshot) => snapshot.context.error)
     const actorRef = UploaderContext.useActorRef()
 
     return (
-        <m.div layoutId="uploader-card" transition={pop} className="w-full max-w-xl rounded-3xl border border-coral/60 bg-card shadow-lg">
+        <m.div ref={ref} layoutId="uploader-card" transition={pop} className="w-full max-w-xl rounded-3xl border border-coral/60 bg-card shadow-lg">
             <m.div
                 animate={{ x: [0, -10, 10, -6, 6, 0] }}
                 transition={{ duration: 0.45, delay: 0.15 }}
@@ -596,10 +596,10 @@ import { pop, settle } from "@/lib/motion"
 import { ConfettiBurst } from "./confetti-burst"
 ```
 
-2. O container raiz vira o par final do morph (fecha o ciclo do spec §3):
+2. O container raiz vira o par final do morph (fecha o ciclo do spec §3). O componente precisa aceitar e encaminhar `ref` (exigência do `popLayout` — ver Task 6): a assinatura de `ResultCard` ganha `ref?: React.Ref<HTMLDivElement>` e o raiz vira:
 
 ```tsx
-        <m.div layoutId="uploader-card" transition={pop} exit={{ opacity: 0, transition: settle }} className="flex w-full max-w-2xl flex-col items-center gap-6">
+        <m.div ref={ref} layoutId="uploader-card" transition={pop} exit={{ opacity: 0, transition: settle }} className="flex w-full max-w-2xl flex-col items-center gap-6">
 ```
 
 (fechar com `</m.div>`.)
