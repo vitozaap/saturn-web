@@ -25,7 +25,7 @@ const eslintConfig = defineConfig([
               message: "Use `m` instead — LazyMotion strict is enabled.",
             },
             {
-              name: "motion",
+              name: "framer-motion",
               importNames: ["motion"],
               message: "Use `m` instead — LazyMotion strict is enabled.",
             },
