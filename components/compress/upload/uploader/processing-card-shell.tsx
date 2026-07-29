@@ -5,7 +5,7 @@ import { Play } from "lucide-react"
 import { m } from "motion/react"
 
 import { cn } from "@/lib/utils"
-import { pop } from "@/lib/motion"
+import { pop, settle } from "@/lib/motion"
 
 type ProcessingCardShellProps = {
     ref?: React.Ref<HTMLDivElement>
@@ -33,7 +33,7 @@ export function ProcessingCardShell({
     children,
 }: ProcessingCardShellProps) {
     return (
-        <m.div ref={ref} layoutId="uploader-card" transition={pop} className="w-full max-w-xl rounded-3xl border bg-card p-5 shadow-lg sm:p-8">
+        <m.div ref={ref} layoutId="uploader-card" transition={pop} exit={{ opacity: 0, transition: settle }} className="w-full max-w-xl rounded-3xl border bg-card p-5 shadow-lg sm:p-8">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
                 <div className="flex min-w-0 items-center gap-3 sm:contents">
                     <div
