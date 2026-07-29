@@ -2,6 +2,7 @@
 
 import { useEffect } from "react"
 import { toast } from "sonner"
+import { AnimatePresence } from "motion/react"
 
 import { UploadForm } from "../uploadForm"
 import { usePosterPair } from "./usePosterPair"
@@ -57,18 +58,20 @@ function UploaderScreens() {
     // (before/after) read from this single capture.
     const poster = usePosterPair(file, preset)
 
-    if (screen === "idle") return <UploadForm />
-
-    if (screen === "result") return <ResultCard before={poster.before} after={poster.after} />
-
     const fileName = file?.name ?? ""
     const metaLine = [resolutionLabel(poster.height ?? 0), formatDuration(poster.duration ?? 0), videoFormatLabel(file?.type ?? "")]
         .filter(Boolean)
         .join(" · ")
 
-    if (screen === "sending") return <SendingCard posterUrl={poster.before} fileName={fileName} metaLine={metaLine} />
-    if (screen === "compressing") return <CompressingCard posterUrl={poster.before} fileName={fileName} metaLine={metaLine} />
-    return <ErrorCard />
+    return (
+        <AnimatePresence mode="popLayout" initial={false}>
+            {screen === "idle" && <UploadForm key="idle" />}
+            {screen === "sending" && <SendingCard key="sending" posterUrl={poster.before} fileName={fileName} metaLine={metaLine} />}
+            {screen === "compressing" && <CompressingCard key="compressing" posterUrl={poster.before} fileName={fileName} metaLine={metaLine} />}
+            {screen === "error" && <ErrorCard key="error" />}
+            {screen === "result" && <ResultCard key="result" before={poster.before} after={poster.after} />}
+        </AnimatePresence>
+    )
 }
 
 export function Uploader() {

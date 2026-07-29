@@ -2,8 +2,10 @@
 
 import { ReactNode } from "react"
 import { Play } from "lucide-react"
+import { m } from "motion/react"
 
 import { cn } from "@/lib/utils"
+import { pop } from "@/lib/motion"
 
 type ProcessingCardShellProps = {
     posterUrl: string | null
@@ -29,7 +31,7 @@ export function ProcessingCardShell({
     children,
 }: ProcessingCardShellProps) {
     return (
-        <div className="w-full max-w-xl rounded-3xl border bg-card p-5 shadow-lg sm:p-8">
+        <m.div layoutId="uploader-card" transition={pop} className="w-full max-w-xl rounded-3xl border bg-card p-5 shadow-lg sm:p-8">
             <div className="flex flex-col gap-3 sm:flex-row sm:items-center sm:gap-4">
                 <div className="flex min-w-0 items-center gap-3 sm:contents">
                     <div
@@ -79,6 +81,6 @@ export function ProcessingCardShell({
                     </button>
                 )}
             </div>
-        </div>
+        </m.div>
     )
 }
