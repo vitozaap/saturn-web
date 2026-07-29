@@ -44,7 +44,7 @@ Na prática o sistema é springy no **conteúdo** e nos **momentos de recompensa
 - O conteúdo interno troca com `AnimatePresence mode="popLayout"` + crossfade rápido.
 - **Reestruturação necessária:** `UploaderScreens` (`components/compress/upload/uploader/uploader.tsx`) deixa de trocar cards inteiros e passa a renderizar um `MotionCardShell` único que recebe o miolo de cada estado. `sending-card`, `compressing-card`, `error-card` e `result-card` viram "miolos" (conteúdo interno), não cards completos. `processing-card-shell` é absorvido/substituído pelo novo shell.
 - **Erro:** o card treme (shake horizontal curto) ao entrar no estado de erro.
-- **Resultado:** o badge de % estala com `pop` + rotação; o confete previsto no design dispara junto.
+- **Resultado:** o bloco de resultado NÃO participa do morph (geometrias incompatíveis — decisão de code review): entra com `rise` + exit fade. O badge de % estala com `pop` + rotação; o confete dispara junto (e é omitido sob reduced motion). O morph fica entre dropzone ↔ cards de processamento/erro.
 
 ## 4. Menus e chrome — sem mudança
 

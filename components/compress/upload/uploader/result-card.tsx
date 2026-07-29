@@ -3,13 +3,13 @@
 import { useState } from "react"
 import Link from "next/link"
 import { Check, Clock, Download, X } from "lucide-react"
-import { m } from "motion/react"
+import { m, useReducedMotion } from "motion/react"
 
 import { Button, buttonVariants } from "@/components/ui/button"
 import { cn } from "@/lib/utils"
 import { formatBytes, videoFormatLabel } from "@/lib/format"
 import { useIsRegistered } from "@/lib/useIsRegistered"
-import { pop, settle } from "@/lib/motion"
+import { pop, rise, settle } from "@/lib/motion"
 import { UploaderContext } from "./uploader-context"
 import { ConfettiBurst } from "./confetti-burst"
 
@@ -48,6 +48,7 @@ function PosterBox({ url, label, size, tone }: { url: string | null; label: stri
 
 export function ResultCard({ before, after, ref }: ResultCardProps) {
     const [inviteDismissed, setInviteDismissed] = useState(false)
+    const shouldReduceMotion = useReducedMotion()
     const { isRegistered, pending: sessionPending } = useIsRegistered()
     const actorRef = UploaderContext.useActorRef()
     const fileName = UploaderContext.useSelector((snapshot) => snapshot.context.file?.name ?? "")
@@ -63,11 +64,11 @@ export function ResultCard({ before, after, ref }: ResultCardProps) {
     const savedLabel = formatBytes(Math.max(0, sourceSize - outputSize))
 
     return (
-        <m.div ref={ref} layoutId="uploader-card" transition={pop} exit={{ opacity: 0, transition: settle }} className="flex w-full max-w-2xl flex-col items-center gap-6">
+        <m.div ref={ref} initial={{ opacity: 0, y: 16 }} animate={{ opacity: 1, y: 0 }} transition={rise} exit={{ opacity: 0, transition: settle }} className="flex w-full max-w-2xl flex-col items-center gap-6">
             <div className="flex flex-col items-center gap-1.5 text-center">
                 <div className="relative flex size-12 items-center justify-center rounded-full bg-primary text-white shadow-lg">
                     <ConfettiBurst />
-                    <Check className="size-6" />
+                    <Check className="relative size-6" />
                 </div>
                 <h2 className="font-heading text-2xl font-extrabold tracking-tight text-balance sm:text-3xl">Squish feito! Bem mais leve.</h2>
                 <div className="font-mono text-xs break-all text-muted-foreground sm:text-sm">
@@ -80,7 +81,7 @@ export function ResultCard({ before, after, ref }: ResultCardProps) {
                 <m.div
                     initial={{ scale: 0, rotate: -20 }}
                     animate={{ scale: 1, rotate: 0 }}
-                    transition={{ ...pop, delay: 0.3 }}
+                    transition={{ ...pop, delay: shouldReduceMotion ? 0 : 0.3 }}
                     className="z-10 -my-4 flex size-19 shrink-0 flex-col items-center justify-center rounded-full border-4 border-background bg-coral text-white shadow-lg sm:my-0 sm:-mx-4"
                 >
                     <div className="font-heading text-xl font-extrabold">−{pctSaved}%</div>

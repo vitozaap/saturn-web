@@ -88,7 +88,7 @@ export function Uploader() {
     return (
         <UploaderContext.Provider>
             <EmittedEventsBridge />
-            <div className="flex w-full flex-1 items-center justify-center px-5 py-4 sm:px-6">
+            <div className="flex w-full flex-1 items-center justify-center overflow-x-clip px-5 py-4 sm:px-6">
                 <UploaderScreens />
             </div>
         </UploaderContext.Provider>
