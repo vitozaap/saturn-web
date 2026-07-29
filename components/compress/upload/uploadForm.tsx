@@ -10,13 +10,7 @@ import { Badge } from "@/components/ui/badge"
 import { Button } from "@/components/ui/button"
 import Link from "next/link"
 import { toast } from "sonner"
-import { pop, rise, settle, STAGGER } from "@/lib/motion"
-
-const riseAt = (step: number) => ({
-    initial: { opacity: 0, y: 16 },
-    animate: { opacity: 1, y: 0 },
-    transition: { ...rise, delay: STAGGER * step },
-})
+import { pop, rise, riseIn, settle, STAGGER } from "@/lib/motion"
 
 export function UploadForm() {
     const actorRef = UploaderContext.useActorRef()
@@ -48,16 +42,16 @@ export function UploadForm() {
                     >
                         <Badge variant={"secondary"} className="-rotate-2">Grátis · rápido · sem marca d&apos;água</Badge>
                     </m.div>
-                    <m.h1 {...riseAt(1)} className="font-heading font-extrabold tracking-tighter text-4xl sm:text-5xl lg:text-6xl max-w-md text-center text-balance">
+                    <m.h1 initial={{ y: 16 }} animate={{ y: 0 }} transition={{ ...rise, delay: STAGGER * 1 }} className="font-heading font-extrabold tracking-tighter text-4xl sm:text-5xl lg:text-6xl max-w-md text-center text-balance">
                         Dê um <span className="text-primary underline decoration-wavy decoration-4 decoration-coral">squish</span> nos seus vídeos.
                     </m.h1>
-                    <m.p {...riseAt(2)} className="text-muted-foreground max-w-xl text-center text-pretty sm:text-lg">Comprima qualquer vídeo e baixe na hora! Sem perder a qualidade que realmente importa.</m.p>
+                    <m.p {...riseIn(STAGGER * 2)} className="text-muted-foreground max-w-xl text-center text-pretty sm:text-lg">Comprima qualquer vídeo e baixe na hora! Sem perder a qualidade que realmente importa.</m.p>
                 </section>
-                <m.form {...riseAt(3)} onSubmit={methods.handleSubmit(onUpload, onError)} className="flex w-full flex-col gap-5 md:h-7/12">
+                <m.form {...riseIn(STAGGER * 3)} onSubmit={methods.handleSubmit(onUpload, onError)} className="flex w-full flex-col gap-5 md:h-7/12">
                     <Dropzone className="md:h-full" />
                     <Presets />
                 </m.form>
-                <m.div {...riseAt(4)} className="flex">
+                <m.div {...riseIn(STAGGER * 4)} className="flex">
                     <p className="text-muted-foreground text-xs text-center text-pretty">Até 500MB - <Button variant={"link"} nativeButton={false} size={"xs"} className={"p-0"} render={<Link href="/login">Faça login</Link>} /> para mais funcionalidades.</p>
                 </m.div>
             </m.main>

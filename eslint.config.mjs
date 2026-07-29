@@ -20,7 +20,7 @@ const eslintConfig = defineConfig([
         {
           patterns: [
             {
-              group: ["motion/react*", "framer-motion", "framer-motion/*"],
+              group: ["motion/react**", "framer-motion**"],
               importNames: ["motion"],
               message: "Use `m` instead — LazyMotion strict is enabled.",
             },

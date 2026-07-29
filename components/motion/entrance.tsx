@@ -2,7 +2,7 @@
 
 import { m } from "motion/react"
 
-import { rise } from "@/lib/motion"
+import { riseIn } from "@/lib/motion"
 
 type EntranceProps = {
     delay?: number
@@ -19,12 +19,7 @@ type EntranceProps = {
  */
 export function Entrance({ delay = 0, className, children }: EntranceProps) {
     return (
-        <m.div
-            className={className}
-            initial={{ opacity: 0, y: 16 }}
-            animate={{ opacity: 1, y: 0 }}
-            transition={{ ...rise, delay }}
-        >
+        <m.div className={className} {...riseIn(delay)}>
             {children}
         </m.div>
     )
