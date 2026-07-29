@@ -1,3 +1,4 @@
+import { Entrance } from "@/components/motion/entrance";
 import { AuthTabs } from "@/components/auth/auth-tabs";
 import { buttonVariants } from "@/components/ui/button";
 import { getSession } from "@/lib/sessionServer";
@@ -20,9 +21,9 @@ export default async function AuthLayout({
                 size: "sm",
                 variant: "link"
             })} href={"/"}> <ArrowLeft /> Voltar para home</Link></div>
-            <div className="flex flex-col gap-4 w-full max-w-100 px-5 pb-8 sm:px-0">
+            <Entrance className="flex flex-col gap-4 w-full max-w-100 px-5 pb-8 sm:px-0">
                 <AuthTabs>{children}</AuthTabs>
-            </div>
+            </Entrance>
         </main>
     )
 }
