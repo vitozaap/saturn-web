@@ -5,18 +5,20 @@ import { RotatingStatusLine } from "./rotating-status-line"
 import { UploaderContext } from "./uploader-context"
 
 type CompressingCardProps = {
+    ref?: React.Ref<HTMLDivElement>
     posterUrl: string | null
     fileName: string
     metaLine: string
 }
 
-export function CompressingCard({ posterUrl, fileName, metaLine }: CompressingCardProps) {
+export function CompressingCard({ ref, posterUrl, fileName, metaLine }: CompressingCardProps) {
     const preset = UploaderContext.useSelector((snapshot) => snapshot.context.preset)
     const queued = UploaderContext.useSelector((snapshot) => snapshot.context.compression?.status === "QUEUED")
     const reconnecting = UploaderContext.useSelector((snapshot) => snapshot.matches({ compressing: "reconnecting" }))
 
     return (
         <ProcessingCardShell
+            ref={ref}
             posterUrl={posterUrl}
             fileName={fileName}
             metaLine={metaLine}
