@@ -1,6 +1,9 @@
 "use client"
 
 import { useEffect, useState } from "react"
+import { AnimatePresence, m } from "motion/react"
+
+import { settle } from "@/lib/motion"
 
 const COMPRESSING_LINES = [
     "Analisando cada quadro com carinho…",
@@ -25,5 +28,18 @@ export function RotatingStatusLine() {
         return () => clearInterval(interval)
     }, [])
 
-    return <p className="animate-in shimmer fade-in text-sm font-medium italic text-muted-foreground">{COMPRESSING_LINES[index]}</p>
+    return (
+        <AnimatePresence mode="wait" initial={false}>
+            <m.p
+                key={index}
+                initial={{ opacity: 0, y: 10 }}
+                animate={{ opacity: 1, y: 0 }}
+                exit={{ opacity: 0, y: -10 }}
+                transition={settle}
+                className="text-sm font-medium italic text-muted-foreground"
+            >
+                {COMPRESSING_LINES[index]}
+            </m.p>
+        </AnimatePresence>
+    )
 }

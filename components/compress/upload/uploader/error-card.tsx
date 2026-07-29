@@ -5,6 +5,7 @@ import { m } from "motion/react"
 
 import { Button } from "@/components/ui/button"
 import { pop } from "@/lib/motion"
+import { Tap } from "@/components/motion/tap"
 import { UploaderContext } from "./uploader-context"
 
 export function ErrorCard({ ref }: { ref?: React.Ref<HTMLDivElement> }) {
@@ -27,10 +28,14 @@ export function ErrorCard({ ref }: { ref?: React.Ref<HTMLDivElement> }) {
                     {error ?? "Não foi possível concluir a compressão. Tente novamente."}
                 </p>
                 <div className="mt-6 flex flex-col items-stretch gap-3 sm:flex-row sm:items-center sm:justify-center">
-                    <Button onClick={() => actorRef.send({ type: "RETRY" })}>Enviar novamente</Button>
-                    <Button variant="outline" onClick={() => actorRef.send({ type: "RESET" })}>
-                        Escolher outro vídeo
-                    </Button>
+                    <Tap className="w-full sm:w-auto">
+                        <Button className="w-full" onClick={() => actorRef.send({ type: "RETRY" })}>Enviar novamente</Button>
+                    </Tap>
+                    <Tap className="w-full sm:w-auto">
+                        <Button variant="outline" className="w-full" onClick={() => actorRef.send({ type: "RESET" })}>
+                            Escolher outro vídeo
+                        </Button>
+                    </Tap>
                 </div>
             </m.div>
         </m.div>

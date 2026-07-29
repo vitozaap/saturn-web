@@ -7,6 +7,7 @@ import { useController, useFormContext } from "react-hook-form";
 import { toast } from "sonner";
 import { m } from "motion/react";
 import { pop } from "@/lib/motion";
+import { Tap } from "@/components/motion/tap";
 import { ACCEPTED_TYPES, ICompressionForm, MAX_SIZE } from "./validation";
 import { describeRejections } from "./rejection";
 
@@ -98,9 +99,11 @@ export default function Dropzone({ className }: { className?: string }) {
                     </div>
                 </div>
             </m.div>
-            <Button type="button" size="lg" className="w-full sm:hidden" onClick={open}>
-                Escolher arquivo
-            </Button>
+            <Tap className="w-full sm:hidden">
+                <Button type="button" size="lg" className="w-full" onClick={open}>
+                    Escolher arquivo
+                </Button>
+            </Tap>
         </div>
     )
 }

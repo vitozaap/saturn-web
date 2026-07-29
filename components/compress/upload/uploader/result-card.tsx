@@ -10,6 +10,7 @@ import { cn } from "@/lib/utils"
 import { formatBytes, videoFormatLabel } from "@/lib/format"
 import { useIsRegistered } from "@/lib/useIsRegistered"
 import { pop, rise, settle } from "@/lib/motion"
+import { Tap } from "@/components/motion/tap"
 import { UploaderContext } from "./uploader-context"
 import { ConfettiBurst } from "./confetti-burst"
 
@@ -95,13 +96,17 @@ export function ResultCard({ before, after, ref }: ResultCardProps) {
             </div>
 
             <div className="flex w-full flex-col items-stretch gap-3 sm:w-auto sm:flex-row sm:items-center">
-                <Button size="lg" onClick={() => actorRef.send({ type: "DOWNLOAD" })}>
-                    <Download className="size-4.5" />
-                    Baixar vídeo · {compLabel}
-                </Button>
-                <Button size="lg" variant="outline" onClick={() => actorRef.send({ type: "RESET" })}>
-                    Comprimir outro
-                </Button>
+                <Tap className="w-full sm:w-auto">
+                    <Button size="lg" className="w-full" onClick={() => actorRef.send({ type: "DOWNLOAD" })}>
+                        <Download className="size-4.5" />
+                        Baixar vídeo · {compLabel}
+                    </Button>
+                </Tap>
+                <Tap className="w-full sm:w-auto">
+                    <Button size="lg" variant="outline" className="w-full" onClick={() => actorRef.send({ type: "RESET" })}>
+                        Comprimir outro
+                    </Button>
+                </Tap>
             </div>
 
             <div className="flex items-center gap-1.5 text-xs font-medium text-muted-foreground">
