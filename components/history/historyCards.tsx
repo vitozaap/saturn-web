@@ -1,3 +1,4 @@
+import { formatDelta } from "@/lib/format"
 import { Compression } from "@/lib/types"
 import { cn } from "@/lib/utils"
 import { cva, VariantProps } from "class-variance-authority"
@@ -30,12 +31,12 @@ function Card({ info, caption, variant = "default", className, ...props }: CardP
 
 export function HistoryCards({ compressions }: { compressions: Compression[] }) {
     const total = totalCompressed(compressions)
-    const percent = average(compressions)
+    const mean = average(compressions)
     return (
         <div className="grid w-full grid-cols-3 items-center gap-2 md:flex md:w-auto">
             {compressions.length === 0 ? "" : <> <Card info={compressions.length} caption="vídeos" />
                 <Card variant={"active"} info={total} caption="comprimidos" />
-                <Card info={`-${percent}%`} caption="média" /></>}
+                <Card info={formatDelta(mean)} caption="média" /></>}
         </div>
     )
 }
