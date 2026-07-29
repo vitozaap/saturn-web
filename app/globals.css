@@ -40,6 +40,7 @@
   --color-card-foreground: var(--card-foreground);
   --color-card: var(--card);
   --color-coral: var(--coral);
+  --color-gold: var(--gold);
   --radius-sm: calc(var(--radius) * 0.6);
   --radius-md: calc(var(--radius) * 0.8);
   --radius-lg: var(--radius);
@@ -86,6 +87,9 @@
   --card: oklch(1 0 0);
   --card-foreground: oklch(0.2046 0.0437 299.2856);
   --coral: oklch(0.6802 0.1894 355.28);
+  /* Third accent of the design's trio (purple/coral/gold), used by the
+     marketing bullet dots. Same value in both themes. */
+  --gold: oklch(0.8432 0.1494 86.5446);
   --popover: oklch(1 0 0);
   --popover-foreground: oklch(0.2046 0.0437 299.2856);
   --primary: oklch(0.5413 0.2466 293.009);
@@ -146,6 +150,7 @@
   --card: oklch(0.2356 0.031 298.3432);
   --card-foreground: oklch(0.9554 0.0082 301.3541);
   --coral: oklch(0.6802 0.1894 355.28);
+  --gold: oklch(0.8432 0.1494 86.5446);
   --popover: oklch(0.2356 0.031 298.3432);
   --popover-foreground: oklch(0.9554 0.0082 301.3541);
   --primary: oklch(0.6794 0.1872 293.0703);
