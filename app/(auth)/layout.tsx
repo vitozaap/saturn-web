@@ -21,7 +21,7 @@ export default async function AuthLayout({
                 size: "sm",
                 variant: "link"
             })} href={"/"}> <ArrowLeft /> Voltar para home</Link></div>
-            <Entrance className="flex flex-col gap-4 w-full max-w-100 px-5 pb-8 sm:px-0">
+            <Entrance className="flex flex-col gap-4 w-full max-w-110 px-5 pb-8 sm:px-0">
                 <AuthTabs>{children}</AuthTabs>
             </Entrance>
         </main>

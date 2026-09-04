@@ -16,6 +16,7 @@
     "better-auth": "^1.6.23",
     "class-variance-authority": "^0.7.1",
     "clsx": "^2.1.1",
+    "cn": "^0.2.5",
     "file-type": "^22.0.1",
     "lucide-react": "^1.24.0",
     "motion": "^12.43.0",
