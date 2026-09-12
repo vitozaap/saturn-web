@@ -24,7 +24,7 @@ export default async function Verify({
                 <CardHeader>
                     <CardTitle>Confirme seu email</CardTitle>
                     <CardDescription>
-                        Enviamos um código de 6 dígitos para <span className="font-medium text-foreground">{email}</span>. O código vale por 5 minutos.
+                        Enviamos um código de 6 dígitos para <span className="font-medium text-foreground wrap-anywhere">{email}</span>. O código vale por 5 minutos.
                     </CardDescription>
                 </CardHeader>
                 <CardContent>
