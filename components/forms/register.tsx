@@ -1,15 +1,14 @@
 "use client"
-import { Controller, useForm } from "react-hook-form"
-import { RegisterFormType, registerSchema } from "./schemas"
-import { zodResolver } from "@hookform/resolvers/zod"
-import { Field, FieldError, FieldGroup, FieldLabel, FieldSet } from "../ui/field"
-import { InputGroup, InputGroupAddon, InputGroupInput } from "../ui/input-group"
-import { Mail, UserRound } from "lucide-react"
-import { PasswordInput } from "../ui/password-input"
-import { Button } from "../ui/button"
-import { authClient } from "@/lib/auth"
-import { useRouter } from "next/navigation"
-import { toast } from "sonner"
+import {Controller, useForm} from "react-hook-form"
+import {RegisterFormType, registerSchema} from "./schemas"
+import {zodResolver} from "@hookform/resolvers/zod"
+import {Field, FieldError, FieldGroup, FieldLabel, FieldSet} from "../ui/field"
+import {InputGroup, InputGroupInput} from "../ui/input-group"
+import {PasswordInput} from "../ui/password-input"
+import {Button} from "../ui/button"
+import {authClient} from "@/lib/auth"
+import {useRouter} from "next/navigation"
+import {toast} from "sonner"
 
 
 export function RegisterForm() {
@@ -28,7 +27,6 @@ export function RegisterForm() {
             email: data.email,
             name: data.name,
             password: data.password,
-            callbackURL: "/history"
         })
             .then((payload) => {
                 if (payload.error) {
@@ -37,8 +35,9 @@ export function RegisterForm() {
                     })
                     return
                 }
-                router.push("/history")
-                router.refresh()
+                // signUp does not create a session: the API requires email
+                // verification, and the session lands on OTP verification.
+                router.push(`/verify?email=${encodeURIComponent(data.email)}`)
             })
     }
     return (
@@ -48,16 +47,14 @@ export function RegisterForm() {
                     <Controller
                         control={form.control}
                         name="name"
-                        render={({ field, fieldState }) =>
+                        render={({field, fieldState}) =>
                             <Field>
-                                <FieldLabel >
+                                <FieldLabel>
                                     Nome completo
                                 </FieldLabel>
                                 <InputGroup>
-                                    <InputGroupInput placeholder="Digite seu nome" {...field} aria-invalid={fieldState.invalid} />
-                                    <InputGroupAddon align={"inline-start"}>
-                                        <UserRound className="text-muted-foreground" />
-                                    </InputGroupAddon>
+                                    <InputGroupInput placeholder="Digite seu nome" {...field}
+                                                     aria-invalid={fieldState.invalid}/>
                                 </InputGroup>
                                 {fieldState.invalid && (
                                     <FieldError>{fieldState.error?.message}</FieldError>
@@ -67,16 +64,14 @@ export function RegisterForm() {
                     <Controller
                         name="email"
                         control={form.control}
-                        render={({ field, fieldState }) =>
+                        render={({field, fieldState}) =>
                             <Field>
-                                <FieldLabel >
+                                <FieldLabel>
                                     Email
                                 </FieldLabel>
                                 <InputGroup>
-                                    <InputGroupInput placeholder="Digite seu email" type="email" {...field} aria-invalid={fieldState.invalid} />
-                                    <InputGroupAddon align={"inline-start"}>
-                                        <Mail className="text-muted-foreground" />
-                                    </InputGroupAddon>
+                                    <InputGroupInput placeholder="Digite seu email" type="email" {...field}
+                                                     aria-invalid={fieldState.invalid}/>
                                 </InputGroup>
                                 {fieldState.invalid && (
                                     <FieldError>{fieldState.error?.message}</FieldError>
@@ -86,12 +81,12 @@ export function RegisterForm() {
                     <Controller
                         name="password"
                         control={form.control}
-                        render={({ field, fieldState }) =>
+                        render={({field, fieldState}) =>
                             <Field>
                                 <FieldLabel>
                                     Senha
                                 </FieldLabel>
-                                <PasswordInput {...field} aria-invalid={fieldState.invalid} />
+                                <PasswordInput {...field} aria-invalid={fieldState.invalid}/>
                                 {fieldState.invalid && (
                                     <FieldError>{fieldState.error?.message}</FieldError>
                                 )}
@@ -100,18 +95,18 @@ export function RegisterForm() {
                     <Controller
                         name="confirmPassword"
                         control={form.control}
-                        render={({ field, fieldState }) =>
+                        render={({field, fieldState}) =>
                             <Field>
                                 <FieldLabel>
                                     Confirmar senha
                                 </FieldLabel>
-                                <PasswordInput {...field} aria-invalid={fieldState.invalid} />
+                                <PasswordInput {...field} aria-invalid={fieldState.invalid}/>
                                 {fieldState.invalid && (
                                     <FieldError>{fieldState.error?.message}</FieldError>
                                 )}
                             </Field>}
                     />
-                    <Button type="submit">Criar minha conta</Button>
+                    <Button type="submit" size={"lg"}>Criar minha conta</Button>
                 </FieldSet>
             </FieldGroup>
         </form>
