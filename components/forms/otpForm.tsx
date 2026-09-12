@@ -3,7 +3,6 @@ import { Controller, useForm } from "react-hook-form"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { REGEXP_ONLY_DIGITS } from "input-otp"
 import { useEffect, useRef, useState } from "react"
-import { useRouter } from "next/navigation"
 import { toast } from "sonner"
 
 import { authClient } from "@/lib/auth"
@@ -23,7 +22,6 @@ const errorMessages: Record<string, string> = {
 }
 
 export function OtpForm({ email }: { email: string }) {
-    const router = useRouter()
     const containerRef = useRef<HTMLDivElement>(null)
     const [cooldown, setCooldown] = useState<number>(RESEND_COOLDOWN)
     const [resending, setResending] = useState<boolean>(false)
@@ -65,8 +63,9 @@ export function OtpForm({ email }: { email: string }) {
                 clearField()
                 return
             }
-            router.push("/history")
-            router.refresh()
+            // Full navigation, not router.push: /history is guarded by server
+            // components and has to see the session cookie this call just set.
+            window.location.assign("/history")
         })
     }
 

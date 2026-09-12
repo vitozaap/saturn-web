@@ -40,8 +40,9 @@ export function LoginForm() {
                 })
                 return
             }
-            router.push("/history")
-            router.refresh()
+            // Full navigation, not router.push: /history is guarded by server
+            // components and has to see the session cookie this call just set.
+            window.location.assign("/history")
         })
     }
     return (
