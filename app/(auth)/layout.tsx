@@ -1,5 +1,4 @@
 import { Entrance } from "@/components/motion/entrance";
-import { AuthTabs } from "@/components/auth/auth-tabs";
 import { buttonVariants } from "@/components/ui/button";
 import { getSession } from "@/lib/sessionServer";
 import { ArrowLeft } from "lucide-react";
@@ -22,7 +21,7 @@ export default async function AuthLayout({
                 variant: "link"
             })} href={"/"}> <ArrowLeft /> Voltar para home</Link></div>
             <Entrance className="flex flex-col gap-4 w-full max-w-110 px-5 pb-8 sm:px-0">
-                <AuthTabs>{children}</AuthTabs>
+                {children}
             </Entrance>
         </main>
     )

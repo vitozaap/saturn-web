@@ -3,8 +3,7 @@ import { Controller, useForm } from "react-hook-form"
 import { Field, FieldError, FieldGroup, FieldLabel, FieldSet } from "../ui/field"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { LoginFormType, loginSchema } from "./schemas"
-import { InputGroup, InputGroupAddon, InputGroupInput } from "../ui/input-group"
-import { Mail } from "lucide-react"
+import { InputGroup, InputGroupInput } from "../ui/input-group"
 import { Button } from "../ui/button"
 import { PasswordInput } from "../ui/password-input"
 import Link from "next/link"
@@ -31,6 +30,11 @@ export function LoginForm() {
             }
         }).then((payload) => {
             if (payload.error) {
+                // The API resends the OTP on this error, so send the user to it.
+                if (payload.error.code === "EMAIL_NOT_VERIFIED") {
+                    router.push(`/verify?email=${encodeURIComponent(data.email)}`)
+                    return
+                }
                 toast.error("Ocorreu um erro ao fazer login", {
                     description: payload.error.message
                 })
@@ -54,9 +58,6 @@ export function LoginForm() {
                                 </FieldLabel>
                                 <InputGroup>
                                     <InputGroupInput placeholder="Digite seu email" type="email" {...field} aria-invalid={fieldState.invalid} />
-                                    <InputGroupAddon align={"inline-start"}>
-                                        <Mail className="text-muted-foreground" />
-                                    </InputGroupAddon>
                                 </InputGroup>
                                 {fieldState.invalid && (
                                     <FieldError>{fieldState.error?.message}</FieldError>
@@ -78,7 +79,7 @@ export function LoginForm() {
                             </Field>}
                     />
                     <Link href={"/"} className={"flex text-sm font-medium w-full justify-end decoration-0 text-primary"}>Esqueceu sua senha?</Link>
-                    <Button type="submit">Entrar agora</Button>
+                    <Button type="submit" size={"lg"}>Entrar agora</Button>
                 </FieldSet>
             </FieldGroup>
         </form>

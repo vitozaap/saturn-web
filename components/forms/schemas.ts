@@ -1,4 +1,4 @@
-import z, { email } from "zod";
+import z from "zod";
 
 
 export const loginSchema = z.object({
@@ -23,3 +23,9 @@ export const registerSchema = z.object({
 })
 
 export type RegisterFormType = z.infer<typeof registerSchema>
+
+export const otpSchema = z.object({
+    otp: z.string().length(6, { error: "O código tem 6 dígitos" })
+})
+
+export type OtpFormType = z.infer<typeof otpSchema>
