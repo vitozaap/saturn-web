@@ -118,7 +118,7 @@ export function OtpForm({ email }: { email: string }) {
                     </Button>
                 </FieldSet>
             </FieldGroup>
-            <span className="flex w-full justify-center items-center font-medium mt-5 text-sm">
+            <span className="flex w-full flex-wrap justify-center items-center font-medium mt-5 text-sm">
                 Não recebeu?
                 <Button type="button" variant={"link"} size={"sm"}
                     className="p-1! decoration-0 text-primary"
